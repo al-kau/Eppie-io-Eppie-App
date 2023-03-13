@@ -1,0 +1,43 @@
+name: Build the project
+
+description: Run building the project
+
+inputs:
+  project-file:
+    description: The project or solution file to build
+    required: true
+    type: string
+
+  project-configuration:
+    description: Defines the build configuration
+    required: false
+    type: string
+    default: Debug
+
+  build-properties:
+    description: Set or override the specified project-level properties
+    required: false
+    type: string
+    default: ''
+
+  builder-type:
+    description: Defines which builder is used to build the project
+    required: false
+    type: choice
+    default: msbuild
+    options: 
+    - msbuild
+    - dotnet
+
+runs:
+  using: "composite"
+  steps:
+    - name: Build with msbuild
+      if: ${{ inputs.builder-type == 'msbuild' }}
+      run: msbuild ${{ inputs.project-file }} -nologo -restore -verbosity:normal -property:Configuration=${{ inputs.project-configuration }} ${{ inputs.build-properties }}
+      shell: pwsh
+
+    - name: Build with dotnet
+      if: ${{ inputs.builder-type == 'dotnet' }}
+      run: dotnet build ${{ inputs.project-file }} --nologo --configuration ${{ inputs.project-configuration }} ${{ inputs.build-properties }}
+      shell: bash
