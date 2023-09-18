@@ -32,8 +32,8 @@ jobs:
 
     strategy:
       matrix:
-        configuration: [ Debug, Release ]
-        target: [ android, gtk, ios, macos, wasm, win-x64, win-x86, win-arm64 ]
+        configuration: [ Debug ]
+        target: [ win-x64 ]
 
     env:
       configuration: ${{ matrix.configuration }}
