@@ -13,7 +13,9 @@ body:
     attributes:
       label: Description
       description: Please give a detailed description of the issue that you're seeing. You can add screenshots and videos as well. 
-      placeholder: Tell us what you see!
+      placeholder: | 
+         
+         Tell us what you see!
     validations:
       required: true
   - type: textarea
