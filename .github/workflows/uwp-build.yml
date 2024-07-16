@@ -48,7 +48,7 @@ jobs:
       run: |
         dotnet tool update --global uno.check --version "1.5.0" --add-source https://api.nuget.org/v3/index.json
         uno-check list
-        uno-check --verbose --ci --non-interactive --fix --target uwp --skip xcode --skip vswin --skip vsmac --skip androidemulator --manifest "https://raw.githubusercontent.com/unoplatform/uno.check/d93ea95044a3ec5cb5a8bfd8f882d0604231625a/manifests/uno.ui.manifest.json"
+        uno-check --verbose --ci --non-interactive --fix --target uwp --skip xcode --skip vswin --skip vsmac --skip androidemulator --skip "dotnetworkloads" --skip "dotnetworkloads-6.0.300" --skip "dotnetworkloads-7.0.100" --skip "dotnetworkloads-7.0.102"  --manifest "https://raw.githubusercontent.com/unoplatform/uno.check/d93ea95044a3ec5cb5a8bfd8f882d0604231625a/manifests/uno.ui.manifest.json"
 
     - name: Build
       run: |
