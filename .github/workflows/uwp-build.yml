@@ -52,4 +52,4 @@ jobs:
 
     - name: Build
       run: |
-        dotnet build src/Eppie.App/Eppie.App.UWP/Eppie.App.UWP.csproj --property:Configuration=Debug --property:Platform=x64
+        dotnet msbuild "src/Eppie.App/Eppie.App.UWP/Eppie.App.UWP.csproj" -nologo -restore -verbosity:minimal -consoleLoggerParameters:Summary -property:Configuration=Debug -property:Platform=x64
