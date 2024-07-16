@@ -40,8 +40,8 @@ jobs:
       with:
         dotnet-version: '7.0.102'
 
-    # - name: Setup msbuild
-      # uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
+    - name: Setup msbuild
+      uses: microsoft/setup-msbuild@6fb02220983dee41ce7ae257b6f4d8f9bf5ed4ce # v2.0.0
 
 
     - name: Setup the Uno Platform
@@ -52,4 +52,4 @@ jobs:
 
     - name: Build
       run: |
-        dotnet msbuild "src/Eppie.App/Eppie.App.UWP/Eppie.App.UWP.csproj" -nologo -restore -verbosity:minimal -consoleLoggerParameters:Summary -property:Configuration=Debug -property:Platform=x64
+        msbuild "src/Eppie.App/Eppie.App.UWP/Eppie.App.UWP.csproj" -nologo -restore -verbosity:minimal -consoleLoggerParameters:Summary -property:Configuration=Debug -property:Platform=x64
