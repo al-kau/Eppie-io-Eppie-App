@@ -40,7 +40,7 @@ jobs:
     env:
       global-json-file: src/Eppie.App/global.json
       xaml-styler-config: src/Eppie.App/Settings.XamlStyler
-      root: "src/Eppie.App/
+      root: src/Eppie.App/
       ignore: "*/bin/*;*/obj/*"
 
     steps:
