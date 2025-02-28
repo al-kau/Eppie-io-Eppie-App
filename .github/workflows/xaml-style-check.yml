@@ -89,7 +89,12 @@ jobs:
               echo "Checking: $xaml - PASS"
             else
               echo "Checking: $xaml - FAIL"
-              correct=false
+
+              if ["$correct" = true ]; then
+                correct=false  
+                echo "::debug::print summary header"
+                echo "### Xaml Style Check Summary" >> $GITHUB_STEP_SUMMARY
+              fi
 
               echo "::debug::run xstyler write-to-stdout"
 
@@ -112,7 +117,7 @@ jobs:
                                 --new-group-format=""  \
                                 -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
-              echo "groups: $diff_lines"
+              echo "::debug::groups: $diff_lines"
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
               for line in "${lines[@]}"; do
@@ -129,6 +134,13 @@ jobs:
               echo "::group::File differences"
               echo "$diff_out"
               echo "::endgroup::"
+
+              echo "<details><summary><strong>$xaml</strong></summary>" >> $GITHUB_STEP_SUMMARY
+              echo '' >> $GITHUB_STEP_SUMMARY
+              echo '```diff' >> $GITHUB_STEP_SUMMARY
+              echo $diff_out >> $GITHUB_STEP_SUMMARY
+              echo '```' >> $GITHUB_STEP_SUMMARY
+              echo "</details>" >> $GITHUB_STEP_SUMMARY
             fi
 
             echo "::debug::next xaml"
