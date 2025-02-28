@@ -103,7 +103,8 @@ jobs:
 
               echo "::debug::run diff old-line-format"
 
-              diff_lines=$(diff --unchanged-line-format="" --old-line-format="%dn;" --new-line-format="" --color <(echo "${xaml_src}") <(echo "${xaml_out}"))
+              err=0
+              diff_lines=$(diff --unchanged-line-format="" --old-line-format="%dn;" --new-line-format="" --color <(echo "${xaml_src}") <(echo "${xaml_out}")) || err=$_
 
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
@@ -111,12 +112,15 @@ jobs:
                 echo "::error file=$xaml,line=$line,title=Invalid xaml style::"
               done
 
+              echo "::debug::run diff"
+
+              err=0
+              diff_out=$(diff --color <(echo "${xaml_src}") <(echo "${xaml_out}")) || err=$_
 
               echo "::debug::print group"
 
               echo "::group::File differences"
-              diff_out=$(diff --color <(echo "${xaml_src}") <(echo "${xaml_out}"))
-              echo -e "$diff_out"
+              echo "$diff_out"
               echo "endgroup::"
             fi
           done
