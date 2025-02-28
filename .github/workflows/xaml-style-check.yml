@@ -144,9 +144,7 @@ jobs:
               echo "<details><summary><strong>$xaml</strong></summary>" >> $GITHUB_STEP_SUMMARY
               echo '' >> $GITHUB_STEP_SUMMARY
               echo '```diff' >> $GITHUB_STEP_SUMMARY
-              cat >> $GITHUB_STEP_SUMMARY <<EOF 
-              $diff_out
-              EOF
+              echo "$diff_out" >> $GITHUB_STEP_SUMMARY
               echo '```' >> $GITHUB_STEP_SUMMARY
               echo "</details>" >> $GITHUB_STEP_SUMMARY
             fi
