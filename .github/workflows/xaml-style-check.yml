@@ -34,7 +34,7 @@ on: # yamllint disable-line rule:truthy
 jobs:
 
   style-check:
-
+    name: Style Check
     runs-on: ubuntu-latest
 
     env:
