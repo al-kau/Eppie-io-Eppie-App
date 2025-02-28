@@ -51,7 +51,6 @@ jobs:
           submodules: recursive
 
       - name: Setup .NET
-        if: inputs.uno-platform == 'true'
         uses: actions/setup-dotnet@6bd8b7f7774af54e05809fcc5431931b3eb1ddee # v4.0.1
         with:
             global-json-file: ${{ env.global-json-file }}
@@ -68,12 +67,19 @@ jobs:
           root='${{ env.root }}'
           config='${{ env.xaml-styler-config }}'
 
+          echo "::debug::parse ignore"
 
           mapfile -t -d ';' ignore_map < <(echo -n $ignore)
           ignore_options=$(printf " ! -path %s " "${ignore_map[@]}")
+
+          echo "::debug::run find xamls"
+
           mapfile -t xamls < <(find $root -name *.xaml $ignore_options )
 
           for xaml in "${xamls[@]}"; do
+
+            echo "::debug::run xstyler passive - $xaml"
+            
             out=$(xstyler --config $config --passive --file $xaml)
 
             err=$?
