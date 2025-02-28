@@ -90,7 +90,7 @@ jobs:
             else
               echo "Checking: $xaml - FAIL"
 
-              if ["$correct" = true ]; then
+              if [ "$correct" = true ]; then
                 correct=false  
                 echo "::debug::print summary header"
                 echo "### Xaml Style Check Summary" >> $GITHUB_STEP_SUMMARY
@@ -125,22 +125,33 @@ jobs:
                 echo "::error file=$xaml,line=${line%:*},endLine=${line#*:},title=Invalid xaml style::Error xaml style"
               done
 
-              echo "::debug::run diff"
+              echo "::debug::run diff color"
 
-              diff_out=$(diff --color=always -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
+              diff_color_out=$(diff --color=always -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
               echo "::debug::print group"
 
               echo "::group::File differences"
-              echo "$diff_out"
+              echo "$diff_color_out"
               echo "::endgroup::"
 
-              echo "<details><summary><strong>$xaml</strong></summary>" >> $GITHUB_STEP_SUMMARY
-              echo '' >> $GITHUB_STEP_SUMMARY
-              echo '```diff' >> $GITHUB_STEP_SUMMARY
-              echo $diff_out >> $GITHUB_STEP_SUMMARY
-              echo '```' >> $GITHUB_STEP_SUMMARY
-              echo "</details>" >> $GITHUB_STEP_SUMMARY
+              echo "::debug::run diff"
+
+              diff_out=$(diff --color=never -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
+
+              echo "::debug::print summary"
+
+              cat << EOF >> $GITHUB_STEP_SUMMARY 
+
+                <details><summary><strong>$xaml</strong></summary>
+
+                ```diff
+                $diff_out
+                ```
+
+                </details>
+
+              EOF
             fi
 
             echo "::debug::next xaml"
