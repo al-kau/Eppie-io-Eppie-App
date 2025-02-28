@@ -116,6 +116,7 @@ jobs:
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
               for line in "${lines[@]}"; do
+                echo "::debug::print error file=$xaml,line=${line%:*},endLine=${line#*:}"
                 echo "::error file=$xaml,line=${line%:*},endLine=${line#*:},title=Invalid xaml style::Error xaml style"
               done
 
