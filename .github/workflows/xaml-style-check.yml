@@ -61,7 +61,6 @@ jobs:
 
       - name: Verify style
         shell: bash
-        continue-on-error: true
         run: |
           correct=true
           ignore='${{ env.ignore }}'
@@ -81,7 +80,9 @@ jobs:
 
             echo "::debug::run xstyler passive - $xaml"
 
+            set +e
             out=$(xstyler --config $config --passive --file $xaml)
+            set -e
 
             err=$?
             if [ $err = 0 ]; then
@@ -92,7 +93,10 @@ jobs:
 
               echo "::debug::run xstyler write-to-stdout"
 
+              set +e
               xaml_out=$(xstyler --config $config --write-to-stdout --loglevel None --file $xaml )
+              set -e
+
               xaml_src=$(cat $xaml)
 
               xaml_out="${xaml_out// /·}"
