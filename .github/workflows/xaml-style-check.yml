@@ -141,13 +141,13 @@ jobs:
 
               echo "::debug::print summary"
 
-              cat << EOF >> $GITHUB_STEP_SUMMARY 
+              cat <<'EOF' >>$GITHUB_STEP_SUMMARY 
 
                 <details><summary><strong>$xaml</strong></summary>
 
-                ```diff
+                \`\`\`diff
                 $diff_out
-                ```
+                \`\`\`
 
                 </details>
 
