@@ -80,8 +80,7 @@ jobs:
 
             echo "::debug::run xstyler passive - $xaml"
 
-            err=0
-            out=$(xstyler --config $config --passive --file $xaml) || err=$?
+            out=$(xstyler --config $config --passive --file $xaml) && err=0 || err=$?
 
             if [ $err = 0 ]; then
               echo "Checking: $xaml - PASS"
@@ -91,8 +90,7 @@ jobs:
 
               echo "::debug::run xstyler write-to-stdout"
 
-              err=0
-              xaml_out=$(xstyler --config $config --write-to-stdout --loglevel None --file $xaml) || err=$?
+              xaml_out=$(xstyler --config $config --write-to-stdout --loglevel None --file $xaml) && err=0 || err=$?
               xaml_src=$(cat $xaml)
 
               xaml_out="${xaml_out// /·}"
@@ -103,8 +101,7 @@ jobs:
 
               echo "::debug::run diff old-line-format"
 
-              err=0
-              diff_lines=$(diff --unchanged-line-format="" --old-line-format="%dn;" --new-line-format="" --color <(echo "${xaml_src}") <(echo "${xaml_out}")) || err=$_
+              diff_lines=$(diff --unchanged-line-format="" --old-line-format="%dn;" --new-line-format="" --color <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
@@ -114,8 +111,7 @@ jobs:
 
               echo "::debug::run diff"
 
-              err=0
-              diff_out=$(diff --color <(echo "${xaml_src}") <(echo "${xaml_out}")) || err=$_
+              diff_out=$(diff --color <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
               echo "::debug::print group"
 
