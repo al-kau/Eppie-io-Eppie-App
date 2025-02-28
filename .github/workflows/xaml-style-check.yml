@@ -80,11 +80,9 @@ jobs:
 
             echo "::debug::run xstyler passive - $xaml"
 
-            set +e
-            out=$(xstyler --config $config --passive --file $xaml)
-            set -e
+            err=0
+            out=$(xstyler --config $config --passive --file $xaml) || err=$?
 
-            err=$?
             if [ $err = 0 ]; then
               echo "Checking: $xaml - PASS"
             else
@@ -93,10 +91,8 @@ jobs:
 
               echo "::debug::run xstyler write-to-stdout"
 
-              set +e
-              xaml_out=$(xstyler --config $config --write-to-stdout --loglevel None --file $xaml )
-              set -e
-
+              err=0
+              xaml_out=$(xstyler --config $config --write-to-stdout --loglevel None --file $xaml) || err=$?
               xaml_src=$(cat $xaml)
 
               xaml_out="${xaml_out// /·}"
