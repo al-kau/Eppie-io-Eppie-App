@@ -111,15 +111,17 @@ jobs:
 
               echo "::debug::run diff"
 
-              diff_out=$(diff --color <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
+              diff_out=$(diff <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
               echo "::debug::print group"
 
               echo "::group::File differences"
               echo "$diff_out"
-              echo "endgroup::"
+              echo "::endgroup::"
             fi
           done
+
+          echo "::debug::print group"
 
           if [ "$correct" = false ]; then
             exit 1
