@@ -76,7 +76,7 @@ jobs:
 
           mapfile -t xamls < <(find $root -name *.xaml $ignore_options )
 
-          echo "::debug::for xamls len=${#xaml[@]}"
+          echo "::debug::for xamls len=${#xamls[@]}"
 
           idx=0
           for xaml in "${xamls[@]}"; do
@@ -126,8 +126,9 @@ jobs:
             echo "::debug::next xaml"
           done
 
-          echo "::debug::exit"
+          echo "::debug::if correct"
 
           if [ "$correct" = false ]; then
+            echo "::debug::exit"
             exit 1
           fi
