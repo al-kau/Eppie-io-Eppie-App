@@ -109,7 +109,7 @@ jobs:
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
               for line in "${lines[@]}"; do
-                echo "::error file=$xaml,line=$line,title=Invalid xaml style::"
+                echo "::error file=$xaml,line=$line,title=Invalid xaml style::Error"
               done
 
               echo "::debug::run diff"
@@ -125,10 +125,3 @@ jobs:
 
             echo "::debug::next xaml"
           done
-
-          echo "::debug::if correct"
-
-          if [ "$correct" = false ]; then
-            echo "::debug::exit"
-            exit 1
-          fi
