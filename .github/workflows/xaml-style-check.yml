@@ -102,19 +102,26 @@ jobs:
               xaml_src="${xaml_src// /·}"
               xaml_src="${xaml_src//$'\t'/→}"
 
-              echo "::debug::run diff old-line-format"
+              echo "::debug::run diff old-group-format"
 
-              diff_lines=$(diff --unchanged-line-format="" --old-line-format="%dn;" --new-line-format="" --color <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
+              diff_lines=$(diff --unchanged-line-format="" \
+                                --old-line-format="" \
+                                --new-line-format="" \
+                                --unchanged-group-format="" \
+                                --old-group-format="%df:%dl;" \
+                                --new-group-format=""  \
+                                -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
+              echo "groups: $diff_lines"
               mapfile -t -d ';' lines < <(echo -n $diff_lines)
 
               for line in "${lines[@]}"; do
-                echo "::error file=$xaml,line=$line,title=Invalid xaml style::Error xaml style"
+                echo "::error file=$xaml,line=${line%:*},endLine=${line#*:},title=Invalid xaml style::Error xaml style"
               done
 
               echo "::debug::run diff"
 
-              diff_out=$(diff <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
+              diff_out=$(diff --color=always -- <(echo "${xaml_src}") <(echo "${xaml_out}")) && err=0 || err=$_
 
               echo "::debug::print group"
 
