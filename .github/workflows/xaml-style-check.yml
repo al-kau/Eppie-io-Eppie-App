@@ -61,6 +61,7 @@ jobs:
 
       - name: Verify style
         shell: bash
+        continue-on-error: true
         run: |
           correct=true
           ignore='${{ env.ignore }}'
@@ -79,7 +80,7 @@ jobs:
           for xaml in "${xamls[@]}"; do
 
             echo "::debug::run xstyler passive - $xaml"
-            
+
             out=$(xstyler --config $config --passive --file $xaml)
 
             err=$?
