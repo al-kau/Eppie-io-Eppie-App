@@ -166,7 +166,7 @@
             "project": "./src/Eppie.App/Eppie.App/Eppie.App.csproj",
             "configuration": "release",
             "framework": "net9.0-ios",
-            "extra": "--verbosity=minimal --nologo"
+            "extra": "-property:RuntimeIdentifier=ios-arm64 --verbosity=minimal --nologo"
         }
     },
 
@@ -187,7 +187,7 @@
             "project": "./src/Eppie.App/Eppie.App/Eppie.App.csproj",
             "configuration": "release",
             "framework": "net9.0-maccatalyst",
-            "extra": "--verbosity=minimal --nologo"
+            "extra": "-property:RuntimeIdentifier=maccatalyst-x64 --verbosity=minimal --nologo"
         }
     },
 
