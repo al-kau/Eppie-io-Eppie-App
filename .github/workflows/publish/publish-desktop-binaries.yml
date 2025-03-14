@@ -1,0 +1,116 @@
+################################################################################
+#                                                                              #
+#   Copyright 2025 Eppie(https://eppie.io)                                     #
+#                                                                              #
+#   Licensed under the Apache License, Version 2.0 (the "License");            #
+#   you may not use this file except in compliance with the License.           #
+#   You may obtain a copy of the License at                                    #
+#                                                                              #
+#       http://www.apache.org/licenses/LICENSE-2.0                             #
+#                                                                              #
+#   Unless required by applicable law or agreed to in writing, software        #
+#   distributed under the License is distributed on an "AS IS" BASIS,          #
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.   #
+#   See the License for the specific language governing permissions and        #
+#   limitations under the License.                                             #
+#                                                                              #
+################################################################################
+
+---
+
+name: Publish desktop binaries
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+    inputs:
+      os:
+        type: choice
+        default: all
+        options:
+          - windows
+          - linux
+          - macos
+          - all
+  workflow_call:
+    inputs:
+      os:
+        type: string
+        required: true
+
+jobs:
+
+  prepare:
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.publish-config.outputs.matrix }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+
+      - name: Initializing inputs
+        id: init
+        shell: bash
+        run: |
+          echo "os: ${{ inputs.os }}"
+          os="all"
+
+          if [[ ${{ github.event_name }} == 'workflow_call' ]]; then
+            os="${{ inputs.os }}"
+          fi
+
+          echo "publish-os=$os" >> $GITHUB_OUTPUT
+
+      - name: Read the binaries publication configuration
+        id: publish-config
+        uses: finebits/github-actions/toolset/select-configuration@4a126d80a11c5fdc83ce884d3d23dffb30bc4495 # v2.0.0
+        with:
+          json-file: ./.github/configurations/publish-desktop-binaries.json
+          keywords: ${{ steps.init.outputs.publish-os }}
+
+      - name: Check configs
+        shell: bash
+        run: |
+          length=$( echo '${{ steps.publish-config.outputs.config-json }}' | jq '. | length' )
+
+          if(( $length == 0 )); then
+            echo "::error::No suitable publish configuration found"
+            exit 1
+          fi
+
+  build:
+    name: ${{ matrix.publish.framework }} ${{ matrix.os }} '${{ matrix.publish.project }}'
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Support longpaths
+        if: ${{ runner.os == 'Windows'}}
+        run: git config --system core.longpaths true
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Install Prerequisites
+        uses: ./.github/actions/install-prerequisites
+
+      - name: Publish
+        if: matrix.publish.tool == 'dotnet'
+        shell: bash
+        run: |
+          project='${{ matrix.publish.project }}'
+          configuration='${{ matrix.publish.configuration }}'
+          framework='${{ matrix.publish.framework }}'
+          extra_options='${{ matrix.publish.extra }}'
+
+          dotnet publish $project --configuration=$configuration --framework=$framework $extra_options
