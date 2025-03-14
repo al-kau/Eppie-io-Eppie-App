@@ -51,25 +51,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Initializing inputs
-        id: init
-        shell: bash
-        run: |
-          echo "os: ${{ inputs.os }}"
-          os="all"
-
-          if [[ ${{ github.event_name }} == 'workflow_call' ]]; then
-            os="${{ inputs.os }}"
-          fi
-
-          echo "publish-os=$os" >> $GITHUB_OUTPUT
-
       - name: Read the binaries publication configuration
         id: publish-config
         uses: finebits/github-actions/toolset/select-configuration@4a126d80a11c5fdc83ce884d3d23dffb30bc4495 # v2.0.0
         with:
           json-file: ./.github/configurations/publish-desktop-binaries.json
-          keywords: ${{ steps.init.outputs.publish-os }}
+          keywords: ${{ inputs.os }}
 
       - name: Check configs
         shell: bash
