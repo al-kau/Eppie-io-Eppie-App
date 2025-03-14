@@ -98,6 +98,6 @@ jobs:
     name: Publish binaries
     needs: prepare
     if: ${{ needs.prepare.outputs.publish-binaries == 'true' }}
-    uses: ./.github/workflows/publish/publish-desktop-binaries.yml
+    uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: ${{ needs.prepare.outputs.publish-os }}
