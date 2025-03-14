@@ -103,6 +103,8 @@ jobs:
 
       - name: Install Prerequisites
         uses: ./.github/actions/install-prerequisites
+        with: 
+          uno-platform: true
 
       - name: Publish
         if: matrix.publish.tool == 'dotnet'
