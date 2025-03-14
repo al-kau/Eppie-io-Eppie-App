@@ -68,7 +68,7 @@ jobs:
             exit 1
           fi
 
-  build:
+  publish:
     name: ${{ matrix.publish.framework }} ${{ matrix.os }} '${{ matrix.publish.project }}'
     needs: prepare
     strategy:
@@ -76,6 +76,9 @@ jobs:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
 
     runs-on: ${{ matrix.os }}
+
+    env:
+      publish-output-path: './publish/'
 
     steps:
       - name: Support longpaths
@@ -100,6 +103,7 @@ jobs:
           project='${{ matrix.publish.project }}'
           configuration='${{ matrix.publish.configuration }}'
           framework='${{ matrix.publish.framework }}'
+          publish_output_path='${{ env.publish-output-path }}'
           extra_options='${{ matrix.publish.extra }}'
 
-          dotnet publish $project --configuration=$configuration --framework=$framework $extra_options
+          dotnet publish $project --output=$publish_output_path --configuration=$configuration --framework=$framework $extra_options
