@@ -99,19 +99,19 @@ jobs:
           # Publish Desktop Binaries
           os_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-binaries.os, steps.init-params.outputs.os) }}"
           framework_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-binaries.framework, steps.init-params.outputs.framework) }}"
-          publish_binaries=$([[ $os_suitable == 'true' && $framework_suitable == 'true']] && echo "true" || echo "false")
+          publish_binaries=$([[ $os_suitable == 'true' && $framework_suitable == 'true' ]] && echo "true" || echo "false")
           echo "binaries=$publish_binaries" >> $GITHUB_OUTPUT
 
           # Publish Desktop linux snap package
           os_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-snap.os, steps.init-params.outputs.os) }}"
           framework_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-snap.framework, steps.init-params.outputs.framework) }}"
-          publish_snap=$([[ $os_suitable == 'true' && $framework_suitable == 'true']] && echo "true" || echo "false")
+          publish_snap=$([[ $os_suitable == 'true' && $framework_suitable == 'true' ]] && echo "true" || echo "false")
           echo "snap=$publish_snap" >> $GITHUB_OUTPUT
 
           # Publish Mac Catalyst pkg package
           os_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).maccatalyst-pkg.os, steps.init-params.outputs.os) }}"
           framework_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).maccatalyst-pkg.framework, steps.init-params.outputs.framework) }}"
-          publish_maccatalyst_pkg=$([[ $os_suitable == 'true' && $framework_suitable == 'true']] && echo "true" || echo "false")
+          publish_maccatalyst_pkg=$([[ $os_suitable == 'true' && $framework_suitable == 'true' ]] && echo "true" || echo "false")
           echo "maccatalyst-pkg=$publish_maccatalyst_pkg" >> $GITHUB_OUTPUT
 
   publish-binaries:
