@@ -29,6 +29,7 @@ on: # yamllint disable-line rule:truthy
         options:
           - all
           - desktop
+          - maccatalyst
       os:
         type: choice
         default: all
