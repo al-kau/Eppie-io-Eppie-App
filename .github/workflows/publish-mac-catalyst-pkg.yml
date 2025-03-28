@@ -155,7 +155,7 @@ jobs:
 
           mkdir -p "${artifact_path}"
 
-          ls "${publish_path}" -alR
+          ls "./.publish" -alR
 
           if [[ "$tool" == "cp" ]]; then
             cp -r "${publish_path}/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
