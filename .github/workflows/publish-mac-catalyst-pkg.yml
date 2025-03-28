@@ -146,6 +146,9 @@ jobs:
 
           rm -rf "$publish_path/*.pdb"
 
+          res=$(ls "./.publish" -alR)
+          echo $res
+
       - name: Prepare Artifacts
         shell: bash
         run: |
@@ -155,7 +158,8 @@ jobs:
 
           mkdir -p "${artifact_path}"
 
-          ls "./.publish" -alR
+          res=$(ls "./.publish" -alR)
+          echo $res
 
           if [[ "$tool" == "cp" ]]; then
             cp -r "${publish_path}/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
