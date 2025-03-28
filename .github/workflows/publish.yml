@@ -124,7 +124,7 @@ jobs:
     secrets: inherit
 
   publish-maccatalyst-pkg:
-    name: Publish Mac Catalyst pkg
+    name: Publish Mac Catalyst [.pkg]
     needs: prepare
     if: ${{ needs.prepare.outputs.publish-maccatalyst-pkg == 'true' }}
     uses: ./.github/workflows/publish-mac-catalyst-pkg.yml
@@ -133,7 +133,7 @@ jobs:
   upload-assets:
     name: Upload Assets
     if: github.event_name == 'release'
-    needs: [ publish-binaries ]
+    needs: [ publish-binaries, publish-maccatalyst-pkg ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
