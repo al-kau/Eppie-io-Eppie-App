@@ -146,8 +146,12 @@ jobs:
           mkdir -p "${publish_path}"
           ls "./.publish" -alR
 
+          pwd
+
           options="--output=$publish_path --configuration=$configuration --framework=$framework --property:Version=\"$semantic_version\" --property:AssemblyVersion=\"$numeric_version\""
           echo "$options  $extra_options" | xargs dotnet publish $project 
+
+          pwd
 
           rm -rf "$publish_path/*.pdb"
 
@@ -161,6 +165,8 @@ jobs:
           tool='${{ matrix.artifact.tool }}'
 
           echo "[$publish_path]"
+
+          pwd
 
           mkdir -p "${artifact_path}"
 
