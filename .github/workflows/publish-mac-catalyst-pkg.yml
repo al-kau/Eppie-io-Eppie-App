@@ -153,12 +153,12 @@ jobs:
           publish_path="${{ env.publish-path }}"
           tool='${{ matrix.artifact.tool }}'
 
-          mkdir -p "$artifact_path"
+          mkdir -p "${artifact_path}"
 
-          ls -alR
+          ls "${publish_path}" -alR
 
           if [[ "$tool" == "cp" ]]; then
-            cp -r "$publish_path/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
+            cp -r "${publish_path}/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
           else
             echo "::warning::Unknown artifact tool: '$tool'"
           fi
