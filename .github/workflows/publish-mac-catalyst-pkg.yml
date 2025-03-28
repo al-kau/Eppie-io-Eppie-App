@@ -109,6 +109,8 @@ jobs:
         run: |
           semantic_version='${{ steps.assign-version.outputs.semantic-version }}'
           numeric_version='${{ steps.assign-version.outputs.numeric-version }}'
+          app_version='${{ steps.assign-version.outputs.app-version }}'
+          app_display_version='${{ steps.assign-version.outputs.app-display-version }}'
 
           project='${{ matrix.publish.project }}'
           configuration='${{ matrix.publish.configuration }}'
@@ -135,6 +137,8 @@ jobs:
         run: |
           semantic_version='${{ steps.assign-version.outputs.semantic-version }}'
           numeric_version='${{ steps.assign-version.outputs.numeric-version }}'
+          app_version='${{ steps.assign-version.outputs.app-version }}'
+          app_display_version='${{ steps.assign-version.outputs.app-display-version }}'
 
           project='${{ matrix.publish.project }}'
           configuration='${{ matrix.publish.configuration }}'
