@@ -146,7 +146,7 @@ jobs:
           options="--output=$publish_path --configuration=$configuration --framework=$framework --property:Version=\"$semantic_version\" --property:AssemblyVersion=\"$numeric_version\""
           echo "$options  $extra_options" | xargs dotnet publish $project 
 
-          rm -rf "$publish_path/*.pdb"
+          rm -rf $publish_path/*.pdb
 
       - name: Prepare Artifacts
         shell: bash
@@ -155,13 +155,7 @@ jobs:
           publish_path="${{ env.publish-path }}"
           tool='${{ matrix.artifact.tool }}'
 
-          echo "publish_path: [$publish_path]"
-
-          echo "pwd: $(pwd)"
-
           mkdir -p "${artifact_path}"
-
-          ls -alR "./.publish"
 
           if [[ "$tool" == "cp" ]]; then
             cp -r ${publish_path}/* ${artifact_path}/ && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
