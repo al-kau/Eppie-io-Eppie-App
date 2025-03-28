@@ -153,15 +153,12 @@ jobs:
           publish_path="${{ env.publish-path }}"
           tool='${{ matrix.artifact.tool }}'
 
-          artifact_name="eppie.desktop-${{ matrix.publish.runtime }}"
-
           mkdir -p "$artifact_path"
 
-          if [[ "$tool" == "tar" ]]; then
-            tar -czf "${artifact_path}/${artifact_name}.tar.gz" -C "$publish_path" . && echo "Archiving of the artifact '$artifact_name' has been completed successfully." || echo "::warning::Failed to archive artifact '$artifact_name'"
-          elif [[ "$tool" == "7z"  ]]; then
-            7z a -tzip "${artifact_path}/${artifact_name}.zip" "$publish_path/*" && echo "Archiving of the artifact '$artifact_name' has been completed successfully." || echo "::warning::Failed to archive artifact '$artifact_name'"
-          elif [[ "$tool" == "cp" ]]; then
+          ls "./.publish" -alR
+          ls "./.artifacts" -alR
+
+          if [[ "$tool" == "cp" ]]; then
             cp -r "$publish_path/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
           else
             echo "::warning::Unknown artifact tool: '$tool'"
