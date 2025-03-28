@@ -144,7 +144,7 @@ jobs:
           echo "[$publish_path]"
 
           mkdir -p "${publish_path}"
-          ls "./.publish" -alR
+          ls -alR "./.publish"
 
           pwd
 
@@ -153,9 +153,11 @@ jobs:
 
           pwd
 
+          ls -alR "./.publish"
+
           rm -rf "$publish_path/*.pdb"
 
-          ls "./.publish" -alR
+          ls -alR "./.publish"
 
       - name: Prepare Artifacts
         shell: bash
@@ -170,7 +172,7 @@ jobs:
 
           mkdir -p "${artifact_path}"
 
-          ls "./.publish" -alR
+          ls -alR "./.publish"
 
           if [[ "$tool" == "cp" ]]; then
             cp -r "${publish_path}/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
