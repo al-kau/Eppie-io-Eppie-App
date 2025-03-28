@@ -144,14 +144,14 @@ jobs:
           echo "[$publish_path]"
 
           mkdir -p "${publish_path}"
+          ls "./.publish" -alR
 
           options="--output=$publish_path --configuration=$configuration --framework=$framework --property:Version=\"$semantic_version\" --property:AssemblyVersion=\"$numeric_version\""
           echo "$options  $extra_options" | xargs dotnet publish $project 
 
           rm -rf "$publish_path/*.pdb"
 
-          res=$(ls "./.publish" -alR)
-          echo "$res"
+          ls "./.publish" -alR
 
       - name: Prepare Artifacts
         shell: bash
@@ -164,8 +164,7 @@ jobs:
 
           mkdir -p "${artifact_path}"
 
-          res=$(ls "./.publish" -alR)
-          echo "$res"
+          ls "./.publish" -alR
 
           if [[ "$tool" == "cp" ]]; then
             cp -r "${publish_path}/*" "$artifact_path" && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
