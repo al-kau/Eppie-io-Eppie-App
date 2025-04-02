@@ -28,6 +28,7 @@ on: # yamllint disable-line rule:truthy
         default: all
         options:
           - all
+          - arm64
           - x64
 
   workflow_call:
