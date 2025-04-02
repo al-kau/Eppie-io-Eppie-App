@@ -95,7 +95,7 @@ jobs:
 
           linux_release=$(lsb_release --release --short)
 
-          snap_core_version='core24'
+          snap_core_version='core'
 
           if [[ "${linux_release%%.*}" == "24" ]]; then
             snap_core_version='core24'
@@ -105,7 +105,12 @@ jobs:
             snap_core_version='core20'
           fi
 
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y libarchive-tools libopenjp2-tools rpm squashfs-tools
           sudo apt-get install -y snapd
+
+          snap find core
+
           sudo snap install $snap_core_version
           sudo snap install multipass
           sudo snap install lxd
