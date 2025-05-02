@@ -16,13 +16,6 @@ updates:
     commit-message:
       prefix: "build"
       include: "scope"
-    groups:
-      UnoPlatform:
-        patterns:
-          - "Uno.*"
-      Microsoft:
-        patterns:
-          - "Microsoft.*"
 
   - package-ecosystem: "gitsubmodule"
     directory: "/"                                  # Path to '.gitmodules' directory
