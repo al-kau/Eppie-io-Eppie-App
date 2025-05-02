@@ -8,6 +8,7 @@ updates:
     directory: "/src/Eppie.App/"                    # Path to '*.sln' directory
     schedule:
       interval: "daily"
+    target-branch: "ci/332-dependabot"
     reviewers:
       - "al-kau"
       - "ValeraFinebits"
