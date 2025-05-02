@@ -5,74 +5,8 @@ version: 2
 updates:
 
   - package-ecosystem: "nuget"
-    # Path to '*.sln' directory
-    directory: "/src/Eppie.App/"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 20
-    commit-message:
-      prefix: "build"
-      include: "scope"
-
-  - package-ecosystem: "nuget"
     # https://github.com/dependabot/dependabot-core/issues/10717#issuecomment-2395168496
     directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 20
-    commit-message:
-      prefix: "build"
-      include: "scope"
-
-  - package-ecosystem: "nuget" 
-    # https://github.com/dependabot/dependabot-core/issues/11341
-    directory:
-      - "*"
-    schedule:
-      interval: "daily"
-    open-pull-requests-limit: 20
-    commit-message:
-      prefix: "build"
-      include: "scope"
-
-  - package-ecosystem: "gitsubmodule"
-    directory: "/"                                  # Path to '.gitmodules' directory
-    schedule:
-      interval: "daily"
-    reviewers:
-      - "al-kau"
-      - "ValeraFinebits"
-      - "anatolse"
-    open-pull-requests-limit: 20
-    commit-message:
-      prefix: "build"
-      include: "scope"
-    groups:
-      submodules:
-        patterns:
-          - "*"
-
-  - package-ecosystem: "github-actions"
-    directory: "/"                                  # Workflow files stored in the default location
-    schedule:
-      interval: "monthly"
-    labels:
-      - "github-actions"
-      - "dependencies"
-    reviewers:
-      - "al-kau"
-      - "anatolse"
-      - "ValeraFinebits"
-    commit-message:
-      prefix: "ci"
-      include: "scope"
-    groups:
-      Common-actions:
-        patterns:
-          - "actions/*"
-      Finebits-actions:
-        patterns:
-          - "finebits/*"
-      GitHub-actions:
-        patterns:
-          - "github/*"
