@@ -8,11 +8,24 @@ updates:
     directory: "/src/Eppie.App/"                    # Path to '*.sln' directory
     schedule:
       interval: "daily"
-    target-branch: "ci/332-dependabot"
-    reviewers:
-      - "al-kau"
-      - "ValeraFinebits"
-      - "anatolse"
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: "build"
+      include: "scope"
+
+  - package-ecosystem: "nuget"
+    directory: "/"                                    # https://github.com/dependabot/dependabot-core/issues/10717#issuecomment-2395168496
+    schedule:
+      interval: "daily"
+    open-pull-requests-limit: 20
+    commit-message:
+      prefix: "build"
+      include: "scope"
+
+  - package-ecosystem: "nuget"
+    directory: "*"                                    # https://github.com/dependabot/dependabot-core/issues/11341
+    schedule:
+      interval: "daily"
     open-pull-requests-limit: 20
     commit-message:
       prefix: "build"
