@@ -5,7 +5,8 @@ version: 2
 updates:
 
   - package-ecosystem: "nuget"
-    directory: "/src/Eppie.App/"                    # Path to '*.sln' directory
+    # Path to '*.sln' directory
+    directory: "/src/Eppie.App/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 20
@@ -14,7 +15,8 @@ updates:
       include: "scope"
 
   - package-ecosystem: "nuget"
-    directory: "/"                                    # https://github.com/dependabot/dependabot-core/issues/10717#issuecomment-2395168496
+    # https://github.com/dependabot/dependabot-core/issues/10717#issuecomment-2395168496
+    directory: "/"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 20
@@ -22,8 +24,10 @@ updates:
       prefix: "build"
       include: "scope"
 
-  - package-ecosystem: "nuget"
-    directory: "*"                                    # https://github.com/dependabot/dependabot-core/issues/11341
+  - package-ecosystem: "nuget" 
+    # https://github.com/dependabot/dependabot-core/issues/11341
+    directory:
+      - "*"
     schedule:
       interval: "daily"
     open-pull-requests-limit: 20
