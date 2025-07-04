@@ -23,7 +23,7 @@ on:
       - release/**
       - develop/**
   schedule:
-    - cron: '36 7 * * 1'
+    - cron: '36 0/2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -48,7 +48,6 @@ jobs:
       - name: Support longpaths
         if: runner.os == 'Windows'
         run: |
-          reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
           git config --system core.longpaths true
 
       - name: Checkout repository
@@ -79,7 +78,7 @@ jobs:
         if: matrix.language == 'csharp'
         shell: pwsh
         run: |
-          msbuild -target:Build -restore:True -verbosity:minimal -consoleLoggerParameters:Summary -maxCpuCount -property:Configuration=Debug ./src/Eppie.App/Eppie.App.sln
+          msbuild -target:Build -restore:True -verbosity:minimal -consoleLoggerParameters:Summary -maxCpuCount -property:CsWinRTAotOptimizerEnabled=false ./src/Eppie.App/Eppie.App.sln
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3.28.18
