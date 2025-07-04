@@ -80,7 +80,7 @@ jobs:
         shell: pwsh
         run: |
           cd ./src/Eppie.App
-          $verbosity=$(("${{ runner.debug }}" -eq 1) ? "-verbosity:detailed" : "-verbosity:minimal")
+          $verbosity=$(("${{ runner.debug }}" -eq 1) ? "-verbosity:normal" : "-verbosity:minimal")
           msbuild -target:Build -restore:True -maxCpuCount -consoleLoggerParameters:Summary $verbosity Eppie.App.sln
 
       - name: Perform CodeQL Analysis
