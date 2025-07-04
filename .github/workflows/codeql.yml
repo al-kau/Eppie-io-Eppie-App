@@ -49,6 +49,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           git config --system core.longpaths true
+          reg add HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\FileSystem /v LongPathsEnabled /t REG_DWORD /d 1 /f
 
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
