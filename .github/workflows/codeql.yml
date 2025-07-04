@@ -79,7 +79,7 @@ jobs:
         shell: pwsh
         run: |
           $verbosity=$(("${{ runner.debug }}" -eq 1) ? "-verbosity:detailed" : "-verbosity:minimal")
-          msbuild -target:Build -restore:True -maxCpuCount -consoleLoggerParameters:Summary $verbosity -property:CsWinRTAotOptimizerEnabled=false ./src/Eppie.App/Eppie.App.sln
+          msbuild -target:Build -restore:True -maxCpuCount -consoleLoggerParameters:Summary $verbosity ./src/Eppie.App/Eppie.App.sln
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@ff0a06e83cb2de871e5a09832bc6a81e7276941f # v3.28.18
