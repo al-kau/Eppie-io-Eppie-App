@@ -1,0 +1,425 @@
+﻿<Page x:Class="AccountSettings.MainPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:local="using:AccountSettings"
+      Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <ScrollViewer Grid.Row="0" IsTabStop="True">
+
+            <StackPanel Margin="44,24,48,0">
+                <TextBlock Margin="0,0,0,16"
+                           FontSize="14"
+                           Text="SERVICE SETTINGS" />
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <TextBlock FontSize="18"
+                                   FontWeight="Medium"
+                                   Text="eppie@outlook.com" />
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <TextBlock HorizontalAlignment="Right"
+                                   FontSize="14"
+                                   Text="Connected"
+                                   TextAlignment="Right" />
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+                <Border BorderBrush="{ThemeResource ControlStrokeColorSecondary}" BorderThickness="0,0,0,2" />
+
+
+                <local:OptionControl Margin="0,40,0,16">
+                    <local:OptionControl.Header>
+                        <TextBlock>
+                            <Run>Login password</Run>
+                            <LineBreak />
+                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Enter the password for this service.</Run>
+                        </TextBlock>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <StackPanel Orientation="Horizontal">
+                            <PasswordBox Width="180" Header="Password" />
+                            <PasswordBox Width="180"
+                                         Margin="8,0,0,0"
+                                         Header="Second password" />
+                        </StackPanel>
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <TextBlock>
+                            <Run>Display name</Run>
+                            <LineBreak />
+                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Name shown in the “From” field of your emails.</Run>
+                        </TextBlock>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <TextBox Width="180"
+                                 HorizontalAlignment="Left"
+                                 VerticalAlignment="Top"
+                                 PlaceholderText="Name" />
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <TextBlock TextWrapping="WrapWholeWords">
+                            <Run>Signature</Run>
+                            <LineBreak />
+                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Each signature moves peer-to-peer communication closer for everyone.</Run>
+                            <LineBreak />
+                            <LineBreak />
+                            <Hyperlink>Learn more</Hyperlink>
+
+                        </TextBlock>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <ToggleSwitch x:Name="SignatureSwitch" />
+                            <TextBlock Grid.Column="1"
+                                       HorizontalAlignment="Right"
+                                       VerticalAlignment="Center"
+                                       FontSize="14"
+                                       TextAlignment="Right"
+                                       TextTrimming="CharacterEllipsis">
+                                <Span>Sent from an <Hyperlink>Eppie</Hyperlink> hybrid address</Span>
+                            </TextBlock>
+                            <TextBox Grid.Row="1"
+                                     Grid.ColumnSpan="2"
+                                     Height="80"
+                                     HorizontalAlignment="Stretch"
+                                     AcceptsReturn="True"
+                                     IsEnabled="{x:Bind SignatureSwitch.IsOn, Mode=OneWay}"
+                                     PlaceholderText="Enter your signature" />
+                        </Grid>
+
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <TextBlock>
+                            <Run>Advanced settings</Run>
+                            <LineBreak />
+                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Backup, IMAP/SMTP, PGP keys parameters.</Run>
+                        </TextBlock>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <ComboBox x:Name="SettingsModeSelector"
+                                  Width="180"
+                                  SelectionChanged="OnSettingModeChanged">
+                            <ComboBox.Items>
+                                <ComboBoxItem Content="Default" />
+                                <ComboBoxItem Content="Custom" />
+                            </ComboBox.Items>
+                        </ComboBox>
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+
+                <StackPanel x:Name="CustomSection" Orientation="Vertical">
+
+                    <local:OptionControl Margin="0,20,0,16">
+                        <local:OptionControl.Header>
+                            <TextBlock>
+                                <Run>Backup</Run>
+                                <LineBreak />
+                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Select options for this service</Run>
+                            </TextBlock>
+                        </local:OptionControl.Header>
+                        <local:OptionControl.OptionContent>
+                            <StackPanel Orientation="Vertical">
+                                <CheckBox Content="Backup settings" />
+                                <CheckBox Content="Backup emails" />
+                            </StackPanel>
+                        </local:OptionControl.OptionContent>
+                    </local:OptionControl>
+
+
+                    <local:OptionControl Margin="0,20,0,16">
+                        <local:OptionControl.Header>
+                            <TextBlock TextWrapping="WrapWholeWords">
+                                <Run>IMAP/SMTP settings</Run>
+                                <LineBreak />
+                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Default settings are automatically configured, but you can manually adjust them anytime.</Run>
+                            </TextBlock>
+                        </local:OptionControl.Header>
+                        <local:OptionControl.OptionContent>
+                            <StackPanel Orientation="Vertical">
+                                <Expander Margin="0,0,0,8"
+                                          HorizontalAlignment="Stretch"
+                                          HorizontalContentAlignment="Stretch"
+                                          Header="Outgoing email server">
+                                    <Grid MinWidth="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBox MinWidth="0"
+                                                 Header="Address"
+                                                 IsSpellCheckEnabled="False"
+                                                 Text="smtp.outlook.com" />
+
+                                        <TextBox Grid.Column="1"
+                                                 Width="64"
+                                                 Margin="8,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Header="Port"
+                                                 Text="465" />
+
+                                        <CheckBox x:Name="SeparateSmtpCredentialsCheckBox"
+                                                  Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Grid.ColumnSpan="2"
+                                                  Margin="0,16,0,0"
+                                                  Content="Use separate login and password" />
+
+                                        <StackPanel Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="2"
+                                                    MinWidth="0"
+                                                    Visibility="{x:Bind SeparateSmtpCredentialsCheckBox.IsChecked, Mode=OneWay}">
+
+                                            <TextBox MinWidth="0"
+                                                     Margin="0,16,0,0"
+                                                     Header="Login"
+                                                     IsSpellCheckEnabled="False" />
+                                            <PasswordBox MinWidth="0"
+                                                         Margin="0,16,0,0"
+                                                         Header="Password" />
+
+                                        </StackPanel>
+                                    </Grid>
+                                </Expander>
+                                <Expander HorizontalAlignment="Stretch"
+                                          HorizontalContentAlignment="Stretch"
+                                          Header="Incoming email server">
+                                    <Grid MinWidth="0">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="*" />
+                                        </Grid.RowDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" />
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+
+                                        <ComboBox Grid.Column="0"
+                                                  Width="88"
+                                                  Margin="0,0,8,0"
+                                                  Header="Protocol"
+                                                  SelectedIndex="0">
+                                            <x:String>IMAP</x:String>
+                                            <x:String>POP3</x:String>
+                                        </ComboBox>
+
+                                        <TextBox Grid.Column="1"
+                                                 MinWidth="0"
+                                                 Header="Address"
+                                                 IsSpellCheckEnabled="False"
+                                                 Text="imap.outlook.com" />
+
+                                        <TextBox Grid.Column="2"
+                                                 Width="64"
+                                                 Margin="8,0,0,0"
+                                                 VerticalAlignment="Center"
+                                                 Header="Port"
+                                                 Text="993" />
+
+                                        <CheckBox x:Name="SeparateImapCredentialsCheckBox"
+                                                  Grid.Row="1"
+                                                  Grid.Column="0"
+                                                  Grid.ColumnSpan="3"
+                                                  Margin="0,16,0,0"
+                                                  Content="Use separate login and password" />
+
+                                        <StackPanel Grid.Row="2"
+                                                    Grid.Column="0"
+                                                    Grid.ColumnSpan="3"
+                                                    MinWidth="0"
+                                                    Visibility="{x:Bind SeparateImapCredentialsCheckBox.IsChecked, Mode=OneWay}">
+
+                                            <TextBox MinWidth="0"
+                                                     Margin="0,16,0,0"
+                                                     Header="Login"
+                                                     IsSpellCheckEnabled="False" />
+                                            <PasswordBox MinWidth="0"
+                                                         Margin="0,16,0,0"
+                                                         Header="Password" />
+
+                                        </StackPanel>
+                                    </Grid>
+                                </Expander>
+                            </StackPanel>
+                        </local:OptionControl.OptionContent>
+                    </local:OptionControl>
+
+
+                    <local:OptionControl Margin="0,20,0,16">
+                        <local:OptionControl.Header>
+                            <TextBlock VerticalAlignment="Center" Text="Synchronization interval" />
+                        </local:OptionControl.Header>
+                        <local:OptionControl.OptionContent>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBox HorizontalAlignment="Left"
+                                         VerticalAlignment="Top"
+                                         Text="10" />
+                                <TextBlock Margin="12,0"
+                                           VerticalAlignment="Center"
+                                           Text="minutes" />
+                            </StackPanel>
+                        </local:OptionControl.OptionContent>
+                    </local:OptionControl>
+
+                    <local:OptionControl Margin="0,20,0,16">
+                        <local:OptionControl.Header>
+                            <TextBlock TextWrapping="WrapWholeWords">
+                                <Run>PGP keys</Run>
+                                <LineBreak />
+                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Eppie generates a PGP key for each address to enable secure e2e communication.</Run>
+                            </TextBlock>
+                        </local:OptionControl.Header>
+                        <local:OptionControl.OptionContent>
+                            <Expander HorizontalAlignment="Stretch"
+                                      VerticalAlignment="Top"
+                                      HorizontalContentAlignment="Stretch">
+                                <Expander.Header>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Text="ME8EAAAAABMFK4EEAAOCAWTP3QMQGHZ78RJRFWBH"
+                                                   TextTrimming="CharacterEllipsis" />
+                                        <Button Grid.Column="1"
+                                                Margin="8,0,0,0"
+                                                HorizontalAlignment="Right"
+                                                Content="Copy" />
+                                    </Grid>
+                                </Expander.Header>
+
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                        <RowDefinition />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               Style="{StaticResource BodyStrongTextBlockStyle}"
+                                               Text="KeyID" />
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="1"
+                                               Margin="8,0,0,0"
+                                               Text="1234567890ABCDEF"
+                                               TextTrimming="CharacterEllipsis" />
+
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="0"
+                                               Margin="0,4,0,0"
+                                               Style="{StaticResource BodyStrongTextBlockStyle}"
+                                               Text="Algorithm" />
+                                    <TextBlock Grid.Row="1"
+                                               Grid.Column="1"
+                                               Margin="8,4,0,0"
+                                               Text="ECDa 256 bit"
+                                               TextTrimming="CharacterEllipsis" />
+
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="0"
+                                               Margin="0,4,0,0"
+                                               Style="{StaticResource BodyStrongTextBlockStyle}"
+                                               Text="Creadted" />
+                                    <TextBlock Grid.Row="2"
+                                               Grid.Column="1"
+                                               Margin="8,4,0,0"
+                                               Text="Thursday, January 1, 1970 12:00:00 AM"
+                                               TextTrimming="CharacterEllipsis" />
+
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="0"
+                                               Margin="0,4,0,0"
+                                               Style="{StaticResource BodyStrongTextBlockStyle}"
+                                               Text="Expires" />
+                                    <TextBlock Grid.Row="3"
+                                               Grid.Column="1"
+                                               Margin="8,4,0,0"
+                                               Text="Never"
+                                               TextTrimming="CharacterEllipsis" />
+
+                                    <StackPanel Grid.Row="4"
+                                                Grid.ColumnSpan="2"
+                                                Margin="0,8,0,0"
+                                                HorizontalAlignment="Right"
+                                                Orientation="Horizontal">
+                                        <Button Content="Export key to file" />
+                                        <Button Margin="8,0,0,0" Content="Send key by email" />
+                                    </StackPanel>
+                                </Grid>
+                            </Expander>
+                        </local:OptionControl.OptionContent>
+                    </local:OptionControl>
+
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="1" Background="White">
+            <local:OptionControl Margin="44,24,48,24">
+                <local:OptionControl.Header>
+                    <StackPanel Orientation="Horizontal">
+                        <Button Width="148" Click="OnApplyClick">
+                            <Grid>
+                                <ProgressRing x:Name="ApplyProgress"
+                                              Width="18"
+                                              Height="18"
+                                              Visibility="Collapsed" />
+                                <TextBlock x:Name="ApplyText" Text="Apply" />
+                            </Grid>
+                        </Button>
+                        <Button Width="148"
+                                Margin="8,0"
+                                Content="Cancel" />
+                    </StackPanel>
+                </local:OptionControl.Header>
+                <local:OptionControl.OptionContent>
+                    <Button Width="148"
+                            HorizontalAlignment="Right"
+                            Content="Remove service"
+                            Foreground="Red" />
+                </local:OptionControl.OptionContent>
+            </local:OptionControl>
+        </Border>
+    </Grid>
+</Page>
