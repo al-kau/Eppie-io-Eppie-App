@@ -4,6 +4,13 @@
       xmlns:local="using:AccountSettings"
       Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+
+    <Page.Resources>
+        <ResourceDictionary>
+            <Thickness x:Key="TextDescriptionMargin">0,4,0,0</Thickness>
+        </ResourceDictionary>
+    </Page.Resources>
+
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
@@ -35,32 +42,54 @@
 
                 <local:OptionControl Margin="0,40,0,16">
                     <local:OptionControl.Header>
-                        <TextBlock>
-                            <Run>Login password</Run>
-                            <LineBreak />
-                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Enter the password for this service.</Run>
-                        </TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Login password" />
+                            <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                       Foreground="{ThemeResource TextFillColorSecondary}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Enter the password for this service."
+                                       TextWrapping="WrapWholeWords" />
+                        </StackPanel>
                     </local:OptionControl.Header>
                     <local:OptionControl.OptionContent>
-                        <StackPanel Orientation="Horizontal">
-                            <PasswordBox Width="180" Header="Password" />
-                            <PasswordBox Width="180"
-                                         Margin="8,0,0,0"
-                                         Header="Second password" />
-                        </StackPanel>
+                        <PasswordBox Width="272"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     PlaceholderText="Enter password" />
                     </local:OptionControl.OptionContent>
                 </local:OptionControl>
 
                 <local:OptionControl Margin="0,20,0,16">
                     <local:OptionControl.Header>
-                        <TextBlock>
-                            <Run>Display name</Run>
-                            <LineBreak />
-                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Name shown in the “From” field of your emails.</Run>
-                        </TextBlock>
+                        <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Text="Second password" />
+                            <HyperlinkButton Margin="0,4,0,0"
+                                             Padding="4">
+                                <FontIcon FontSize="16" Glyph="&#xE946;" />
+                            </HyperlinkButton>
+                        </StackPanel>
                     </local:OptionControl.Header>
                     <local:OptionControl.OptionContent>
-                        <TextBox Width="180"
+                        <PasswordBox Width="272"
+                                     HorizontalAlignment="Left"
+                                     VerticalAlignment="Top"
+                                     PlaceholderText="Enter second password" />
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Display name" />
+                            <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                       Foreground="{ThemeResource TextFillColorSecondary}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Name shown in the 'From' field of your emails."
+                                       TextWrapping="WrapWholeWords" />
+                        </StackPanel>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <TextBox Width="272"
                                  HorizontalAlignment="Left"
                                  VerticalAlignment="Top"
                                  PlaceholderText="Name" />
@@ -70,15 +99,21 @@
 
                 <local:OptionControl Margin="0,20,0,16">
                     <local:OptionControl.Header>
-                        <TextBlock TextWrapping="WrapWholeWords">
-                            <Run>Signature</Run>
-                            <LineBreak />
-                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Each signature moves peer-to-peer communication closer for everyone.</Run>
-                            <LineBreak />
-                            <LineBreak />
-                            <Hyperlink>Learn more</Hyperlink>
 
-                        </TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Signature" />
+                            <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                       Foreground="{ThemeResource TextFillColorSecondary}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Each signature moves peer-to-peer communication closer for everyone."
+                                       TextWrapping="WrapWholeWords" />
+                            <TextBlock Margin="0,16,0,0"
+                                       Foreground="{ThemeResource TextFillColorSecondary}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       TextWrapping="WrapWholeWords">
+                                <Hyperlink>Learn more</Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
                     </local:OptionControl.Header>
                     <local:OptionControl.OptionContent>
                         <Grid>
@@ -113,11 +148,14 @@
 
                 <local:OptionControl Margin="0,20,0,16">
                     <local:OptionControl.Header>
-                        <TextBlock>
-                            <Run>Advanced settings</Run>
-                            <LineBreak />
-                            <Run Foreground="{ThemeResource TextFillColorSecondary}">Backup, IMAP/SMTP, PGP keys parameters.</Run>
-                        </TextBlock>
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Advanced settings" />
+                            <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                       Foreground="{ThemeResource TextFillColorSecondary}"
+                                       Style="{StaticResource CaptionTextBlockStyle}"
+                                       Text="Backup, IMAP/SMTP, PGP keys parameters."
+                                       TextWrapping="WrapWholeWords" />
+                        </StackPanel>
                     </local:OptionControl.Header>
                     <local:OptionControl.OptionContent>
                         <ComboBox x:Name="SettingsModeSelector"
@@ -136,11 +174,14 @@
 
                     <local:OptionControl Margin="0,20,0,16">
                         <local:OptionControl.Header>
-                            <TextBlock>
-                                <Run>Backup</Run>
-                                <LineBreak />
-                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Select options for this service</Run>
-                            </TextBlock>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="Backup" />
+                                <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                           Foreground="{ThemeResource TextFillColorSecondary}"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Text="Select options for this service."
+                                           TextWrapping="WrapWholeWords" />
+                            </StackPanel>
                         </local:OptionControl.Header>
                         <local:OptionControl.OptionContent>
                             <StackPanel Orientation="Vertical">
@@ -153,11 +194,14 @@
 
                     <local:OptionControl Margin="0,20,0,16">
                         <local:OptionControl.Header>
-                            <TextBlock TextWrapping="WrapWholeWords">
-                                <Run>IMAP/SMTP settings</Run>
-                                <LineBreak />
-                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Default settings are automatically configured, but you can manually adjust them anytime.</Run>
-                            </TextBlock>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="IMAP/SMTP settings" />
+                                <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                           Foreground="{ThemeResource TextFillColorSecondary}"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Text="Default settings are automatically configured, but you can manually adjust them anytime."
+                                           TextWrapping="WrapWholeWords" />
+                            </StackPanel>
                         </local:OptionControl.Header>
                         <local:OptionControl.OptionContent>
                             <StackPanel Orientation="Vertical">
@@ -297,11 +341,14 @@
 
                     <local:OptionControl Margin="0,20,0,16">
                         <local:OptionControl.Header>
-                            <TextBlock TextWrapping="WrapWholeWords">
-                                <Run>PGP keys</Run>
-                                <LineBreak />
-                                <Run Foreground="{ThemeResource TextFillColorSecondary}">Eppie generates a PGP key for each address to enable secure e2e communication.</Run>
-                            </TextBlock>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="PGP keys" />
+                                <TextBlock Margin="{StaticResource TextDescriptionMargin}"
+                                           Foreground="{ThemeResource TextFillColorSecondary}"
+                                           Style="{StaticResource CaptionTextBlockStyle}"
+                                           Text="Eppie generates a PGP key for each address to enable secure e2e communication."
+                                           TextWrapping="WrapWholeWords" />
+                            </StackPanel>
                         </local:OptionControl.Header>
                         <local:OptionControl.OptionContent>
                             <Expander HorizontalAlignment="Stretch"
@@ -337,44 +384,44 @@
                                     </Grid.RowDefinitions>
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="0"
-                                               Style="{StaticResource BodyStrongTextBlockStyle}"
-                                               Text="KeyID" />
+                                               Text="KeyID:" />
                                     <TextBlock Grid.Row="0"
                                                Grid.Column="1"
-                                               Margin="8,0,0,0"
+                                               Margin="24,0,0,0"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                Text="1234567890ABCDEF"
                                                TextTrimming="CharacterEllipsis" />
 
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="0"
                                                Margin="0,4,0,0"
-                                               Style="{StaticResource BodyStrongTextBlockStyle}"
-                                               Text="Algorithm" />
+                                               Text="Algorithm:" />
                                     <TextBlock Grid.Row="1"
                                                Grid.Column="1"
-                                               Margin="8,4,0,0"
+                                               Margin="24,4,0,0"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                Text="ECDa 256 bit"
                                                TextTrimming="CharacterEllipsis" />
 
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="0"
                                                Margin="0,4,0,0"
-                                               Style="{StaticResource BodyStrongTextBlockStyle}"
-                                               Text="Creadted" />
+                                               Text="Creadted:" />
                                     <TextBlock Grid.Row="2"
                                                Grid.Column="1"
-                                               Margin="8,4,0,0"
+                                               Margin="24,4,0,0"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                Text="Thursday, January 1, 1970 12:00:00 AM"
                                                TextTrimming="CharacterEllipsis" />
 
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="0"
                                                Margin="0,4,0,0"
-                                               Style="{StaticResource BodyStrongTextBlockStyle}"
-                                               Text="Expires" />
+                                               Text="Expires:" />
                                     <TextBlock Grid.Row="3"
                                                Grid.Column="1"
-                                               Margin="8,4,0,0"
+                                               Margin="24,4,0,0"
+                                               Foreground="{ThemeResource TextFillColorSecondaryBrush}"
                                                Text="Never"
                                                TextTrimming="CharacterEllipsis" />
 
@@ -383,8 +430,8 @@
                                                 Margin="0,8,0,0"
                                                 HorizontalAlignment="Right"
                                                 Orientation="Horizontal">
-                                        <Button Content="Export key to file" />
-                                        <Button Margin="8,0,0,0" Content="Send key by email" />
+                                        <Button Content="Export to file" />
+                                        <Button Margin="8,0,0,0" Content="Send by email" />
                                     </StackPanel>
                                 </Grid>
                             </Expander>

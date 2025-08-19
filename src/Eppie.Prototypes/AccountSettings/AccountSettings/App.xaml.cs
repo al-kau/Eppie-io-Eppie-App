@@ -134,8 +134,13 @@ public partial class App : Application
 
     private void ConfigureMinimumWindowSize()
     {
-        const int MinWidth = 852;
-        const int MinHeight = 480;
+        // The minimum window size is the size of the Xbox app, excluding the TV-safe zone.
+        // https://learn.microsoft.com/en-us/windows/apps/design/devices/designing-for-tv#scale-factor-and-adaptive-layout
+        // https://learn.microsoft.com/en-us/windows/apps/design/devices/designing-for-tv#tv-safe-area
+        // (1920 x 1080 pixels) in 200% scale excluding (48px,27px,48px,27px) area
+
+        const int MinWidth = 864;       // 960 - 48 - 48 = 864
+        const int MinHeight = 486;      // 540 - 27 - 27 = 486
 
 #if HAS_UNO
 
