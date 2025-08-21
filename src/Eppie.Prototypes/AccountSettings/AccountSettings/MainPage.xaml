@@ -6,9 +6,83 @@
 
 
     <Page.Resources>
-        <ResourceDictionary>
-            <Thickness x:Key="TextDescriptionMargin">0,4,0,0</Thickness>
-        </ResourceDictionary>
+
+        <Thickness x:Key="TextDescriptionMargin">0,4,0,0</Thickness>
+
+        <StaticResource x:Key="HyperlinkButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+        <StaticResource x:Key="HyperlinkButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+        <StaticResource x:Key="HyperlinkButtonForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
+        <StaticResource x:Key="HyperlinkButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+        <StaticResource x:Key="HyperlinkButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBackgroundPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+
+        <StaticResource x:Key="HyperlinkButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBorderBrushPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="HyperlinkButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+
+
+        <StaticResource x:Key="ToggleButtonBackground" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundChecked" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundCheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundCheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundCheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundIndeterminate" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundIndeterminatePointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundIndeterminatePressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBackgroundIndeterminateDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+
+        <StaticResource x:Key="ToggleButtonForeground" ResourceKey="TextFillColorPrimaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundPressed" ResourceKey="TextFillColorTertiaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+        <StaticResource x:Key="ToggleButtonForegroundChecked" ResourceKey="TextFillColorPrimaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundCheckedPointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundCheckedPressed" ResourceKey="TextFillColorTertiaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundCheckedDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+        <StaticResource x:Key="ToggleButtonForegroundIndeterminate" ResourceKey="TextFillColorPrimaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundIndeterminatePointerOver" ResourceKey="TextFillColorSecondaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundIndeterminatePressed" ResourceKey="TextFillColorTertiaryBrush" />
+        <StaticResource x:Key="ToggleButtonForegroundIndeterminateDisabled" ResourceKey="TextFillColorDisabledBrush" />
+
+        <StaticResource x:Key="ToggleButtonBorderBrush" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushChecked" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushCheckedPointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushCheckedPressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushCheckedDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushIndeterminate" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushIndeterminatePointerOver" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushIndeterminatePressed" ResourceKey="SubtleFillColorTransparentBrush" />
+        <StaticResource x:Key="ToggleButtonBorderBrushIndeterminateDisabled" ResourceKey="SubtleFillColorTransparentBrush" />
+
+        <Storyboard x:Name="RotateChevronTo180Degrees">
+            <DoubleAnimation EnableDependentAnimation="True"
+                             Storyboard.TargetName="ChevronTransform"
+                             Storyboard.TargetProperty="Angle"
+                             From="0"
+                             To="180"
+                             Duration="0:0:0.1" />
+        </Storyboard>
+        <Storyboard x:Name="RotateChevronTo0Degrees">
+            <DoubleAnimation EnableDependentAnimation="True"
+                             Storyboard.TargetName="ChevronTransform"
+                             Storyboard.TargetProperty="Angle"
+                             From="180"
+                             To="0"
+                             Duration="0:0:0.1" />
+
+        </Storyboard>
     </Page.Resources>
 
     <Grid Background="White">
@@ -64,8 +138,15 @@
                         <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Text="Second password" />
                             <HyperlinkButton Margin="0,4,0,0"
-                                             Padding="4">
+                                             Padding="4"
+                                             Click="OnSecondPasswordInfoClick">
                                 <FontIcon FontSize="16" Glyph="&#xE946;" />
+                                <!-- Note: Also here we can try to use TeachingTip control -->
+                                <FlyoutBase.AttachedFlyout>
+                                    <Flyout>
+                                        <TextBlock Text="This is some text in a flyout." />
+                                    </Flyout>
+                                </FlyoutBase.AttachedFlyout>
                             </HyperlinkButton>
                         </StackPanel>
                     </local:OptionControl.Header>
@@ -146,6 +227,8 @@
                     </local:OptionControl.OptionContent>
                 </local:OptionControl>
 
+                <!-- The first version of the 'Advanced settings' switch -->
+                <!--
                 <local:OptionControl Margin="0,20,0,16">
                     <local:OptionControl.Header>
                         <StackPanel Orientation="Vertical">
@@ -158,19 +241,57 @@
                         </StackPanel>
                     </local:OptionControl.Header>
                     <local:OptionControl.OptionContent>
-                        <ComboBox x:Name="SettingsModeSelector"
-                                  Width="180"
-                                  SelectionChanged="OnSettingModeChanged">
-                            <ComboBox.Items>
-                                <ComboBoxItem Content="Default" />
-                                <ComboBoxItem Content="Custom" />
-                            </ComboBox.Items>
-                        </ComboBox>
+                        <Grid>
+                            <ComboBox x:Name="SettingsModeSelector"
+                                      VerticalAlignment="Top"
+                                      HorizontalAlignment="Left"
+                                      Width="180"
+                                      SelectionChanged="OnSettingModeChanged">
+                                <ComboBox.Items>
+                                    <ComboBoxItem Content="Default" />
+                                    <ComboBoxItem Content="Custom" />
+                                </ComboBox.Items>
+                            </ComboBox>
+                            <Button HorizontalAlignment="Right"
+                                    VerticalAlignment="Top"
+                                    Content="Set default"
+                                    Visibility="{x:Bind IsAdvancedMode, Mode=OneWay}" />
+                        </Grid>
+                    </local:OptionControl.OptionContent>
+                </local:OptionControl>
+                -->
+
+                <!-- The second version of the 'Advanced settings' switch -->
+                <local:OptionControl Margin="0,20,0,16">
+                    <local:OptionControl.Header>
+                        <ToggleButton Padding="0,4"
+                                      VerticalAlignment="Top"
+                                      IsChecked="{x:Bind IsAdvancedMode, Mode=TwoWay}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Advanced settings" />
+                                <FontIcon Margin="4,0"
+                                          FontSize="12"
+                                          Glyph="&#xE70D;"
+                                          RenderTransformOrigin="0.5, 0.5">
+                                    <FontIcon.RenderTransform>
+                                        <RotateTransform x:Name="ChevronTransform" />
+                                    </FontIcon.RenderTransform>
+                                </FontIcon>
+                            </StackPanel>
+                        </ToggleButton>
+                    </local:OptionControl.Header>
+                    <local:OptionControl.OptionContent>
+                        <Button HorizontalAlignment="Right"
+                                VerticalAlignment="Top"
+                                Content="Set default"
+                                Visibility="{x:Bind IsAdvancedMode, Mode=OneWay}" />
                     </local:OptionControl.OptionContent>
                 </local:OptionControl>
 
 
-                <StackPanel x:Name="CustomSection" Orientation="Vertical">
+                <StackPanel x:Name="CustomSection"
+                            Orientation="Vertical"
+                            Visibility="{x:Bind IsAdvancedMode, Mode=OneWay}">
 
                     <local:OptionControl Margin="0,20,0,16">
                         <local:OptionControl.Header>
