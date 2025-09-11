@@ -104,10 +104,6 @@ namespace Tuvi.App.Shared.Services
             {
                 return ShowNoSecretKeyErrorMessageAsync(noSecretKeyException.KeyId);
             }
-            else if (exception is NoPublicKeyException noPublicKeyException)
-            {
-                return ShowNoPublicKeyErrorMessageAsync(noPublicKeyException.EmailAddress.DisplayName);
-            }
             else if (exception is MessageDecryptionException decryptionException)
             {
                 return ShowDecryptionErrorMessageAsync(decryptionException.Message);
@@ -428,6 +424,10 @@ namespace Tuvi.App.Shared.Services
             {
                 return ShowNewMessagesCheckFailedErrorMessageAsync(newMessagesCheckFailedException);
             }
+            else if (coreException is NoPublicKeyException noPublicKeyException)
+            {
+                return ShowNoPublicKeyErrorMessageAsync(noPublicKeyException.Email.DisplayName);
+            }
             else
             {
                 return ShowDefaultErrorMessageAsync(coreException);
@@ -491,6 +491,15 @@ namespace Tuvi.App.Shared.Services
                 StringProvider.GetString("RemoveAIAgentDialogMessage"),
                 StringProvider.GetString("RemoveAIAgentDialogAcceptText"),
                 StringProvider.GetString("RemoveAIAgentDialogRejectText"));
+        }
+
+        public Task<bool> ShowRemovePgpKeyDialogAsync()
+        {
+            return ShowDialogAsync(
+                StringProvider.GetString("RemovePgpKeyDialogTitle"),
+                StringProvider.GetString("RemovePgpKeyDialogMessage"),
+                StringProvider.GetString("RemovePgpKeyDialogAcceptText"),
+                StringProvider.GetString("RemovePgpKeyDialogRejectText"));
         }
 
         public Task<bool> ShowRequestReviewMessageAsync()

@@ -181,6 +181,10 @@
     <value>Mailboxes</value>
     <comment>The header for Tab with list of mailboxes (user connected e-mail accounts)</comment>
   </data>
+  <data name="RenameContactMenuItem.Text" xml:space="preserve">
+    <value>Rename contact</value>
+    <comment>Text of the context menu item that renames contact</comment>
+  </data>
   <data name="ChangeContactAvatarMenuItem.Text" xml:space="preserve">
     <value>Change avatar</value>
     <comment>Text of the context menu item that changes contact's avatar</comment>
@@ -256,5 +260,21 @@
   <data name="WhatsNew.Text" xml:space="preserve">
     <value>WHAT'S NEW</value>
     <comment>A title for the What's new window.</comment>
+  </data>
+  <data name="NetworkName.Header" xml:space="preserve">
+    <value>Network</value>
+    <comment>A title for the Network combobox</comment>
+  </data>
+  <data name="SecretKeyWIF.Text" xml:space="preserve">
+    <value>Secret key (WIF)</value>
+    <comment>Title for the Wallet Import Format (WIF) private key display field.</comment>
+  </data>
+  <data name="WarningTestnet.Text" xml:space="preserve">
+    <value>Warning: Testnet addresses are for testing only. Not for real-world use. Use at your own risk.</value>
+    <comment>Warning for testnet addresses.</comment>
+  </data>
+  <data name="ClaimNameButton.Text" xml:space="preserve">
+    <value>Claim</value>
+    <comment>Button text to claim decentralized name</comment>
   </data>
 </root>

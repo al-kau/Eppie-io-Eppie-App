@@ -22,7 +22,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.Input;
-using Tuvi.Core;
 using Tuvi.Core.Entities;
 
 namespace Tuvi.App.ViewModels
@@ -94,7 +93,7 @@ namespace Tuvi.App.ViewModels
                 var email = AccountSettingsModelToAccount()?.Email;
                 if (email != null)
                 {
-                    var deckey = Core.GetSecurityManager().GetEmailPublicKeyString(email);
+                    var deckey = await Core.GetSecurityManager().GetEmailPublicKeyStringAsync(email).ConfigureAwait(true);
                     var hybridAddress = email.MakeHybrid(deckey);
 
                     var account = await Core.GetAccountAsync(hybridAddress).ConfigureAwait(true);

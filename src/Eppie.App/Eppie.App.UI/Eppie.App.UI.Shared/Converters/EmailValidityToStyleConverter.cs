@@ -16,27 +16,39 @@
 //                                                                              //
 // ---------------------------------------------------------------------------- //
 
-using System.Threading.Tasks;
+using System;
+using EmailValidation;
+using Tuvi.Core.Entities;
 
-namespace Tuvi.App.ViewModels.Services
+#if WINDOWS_UWP
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Data;
+#else
+using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Data;
+#endif
+
+// ToDo: Change namespace
+namespace Tuvi.App.Converters
 {
-    public interface ITuviMailMessageService : IMessageService
+    public class EmailValidityToStyleConverter : IValueConverter
     {
-        Task ShowEnableImapMessageAsync(string forEmail);
-        Task ShowAddAccountMessageAsync();
+        public Style ValidEmailStyle { get; set; }
+        public Style InvalidEmailStyle { get; set; }
 
-        Task ShowSeedPhraseNotValidMessageAsync();
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            if (value is EmailAddress email && EmailValidator.Validate(email.StandardAddress, allowTopLevelDomains: true))
+            {
+                return ValidEmailStyle;
+            }
 
-        Task ShowPgpPublicKeyAlreadyExistMessageAsync(string fileName);
-        Task ShowPgpUnknownPublicKeyAlgorithmMessageAsync(string fileName);
-        Task ShowPgpPublicKeyImportErrorMessageAsync(string detailedReason, string fileName);
+            return InvalidEmailStyle;
+        }
 
-        Task<bool> ShowWipeAllDataDialogAsync();
-        Task<bool> ShowRemoveAccountDialogAsync();
-        Task<bool> ShowRemoveAIAgentDialogAsync();
-        Task<bool> ShowRemovePgpKeyDialogAsync();
-        Task<bool> ShowRequestReviewMessageAsync();
-
-        Task ShowNeedToCreateSeedPhraseMessageAsync();
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            return DependencyProperty.UnsetValue;
+        }
     }
 }
