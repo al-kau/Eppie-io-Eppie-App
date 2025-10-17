@@ -3,8 +3,10 @@
 [![LicenseBadge](https://img.shields.io/github/license/Eppie-io/Eppie-App.svg)](https://raw.githubusercontent.com/Eppie-io/Eppie-App/main/LICENSE)
 [![Build and Test](https://img.shields.io/github/actions/workflow/status/Eppie-io/Eppie-App/build.yml?logo=github&branch=main&event=push)](https://github.com/Eppie-io/Eppie-App/actions/workflows/build.yml?query=branch%3Amain+event%3Apush)
 [![Crowdin](https://badges.crowdin.net/e/8fee200a40ee70ffd3fa6b7d8d23deee/localized.svg)](https://eppie.crowdin.com/eppie)
-[![Release](https://img.shields.io/github/v/release/Eppie-io/Eppie-App)](https://github.com/Eppie-io/Eppie-App/releases/latest)
 [![GitHub release downloads](https://img.shields.io/github/downloads/Eppie-io/Eppie-App/total)](https://github.com/Eppie-io/Eppie-App/releases)
+
+[![Release](https://img.shields.io/github/v/release/Eppie-io/Eppie-App)](https://github.com/Eppie-io/Eppie-App/releases/latest)
+[![eppie](https://snapcraft.io/eppie/badge.svg)](https://snapcraft.io/eppie)
 
 ## Intro
 ![Eppie](/screenshots/Eppie.png)
@@ -31,23 +33,33 @@ Eppie is early in development. The p2p part is not publicly available at the mom
 ## Screenshots
 
 <details>
-  <summary>Main Screen</summary>
-  <img src="/screenshots/MainPage.png" alt="Main Screen"/>
+  <summary>Linux</summary>
+  <img src="/screenshots/Linux/Eppie1.png" alt="Main Page"/>
+  <img src="/screenshots/Linux/Eppie2.png" alt="Services"/>
+  <img src="/screenshots/Linux/Eppie3.png" alt="Mailbox Settings Page"/>
 </details>
 
 <details>
-  <summary>Settings Page</summary>
-  <img src="/screenshots/Settings.png" alt="Settings Page"/>
+  <summary>macOS</summary>
+  <img src="/screenshots/macOS/Eppie.png" alt="Main Page"/>
 </details>
 
-## Install from Microsoft Store, App Store or Google Play
+<details>
+  <summary>Windows</summary>
+  <img src="/screenshots/Windows/MainPage.png" alt="Main Page"/>
+  <img src="/screenshots/Windows/Settings.png" alt="Settings Page"/>
+</details>
 
-There's a preview version currently available at Microsoft Store.
+## Install from Microsoft Store, Snap Store, App Store and Google Play
+
+There's a preview version currently available at:
 <p align="left">
   <a href="https://apps.microsoft.com/detail/Eppie%20Mail%20Preview/9n3r8xkz16c5?mode=direct&cid=github">
     <img src="https://get.microsoft.com/images/en-us%20light.svg" width="200" alt="Download" />
   </a>
 </p>
+
+[![Get it from the Snap Store](https://snapcraft.io/en/light/install.svg)](https://snapcraft.io/eppie)
 
 App Store and Google Play: WIP
 
@@ -66,6 +78,7 @@ You may download the latest release for your system:
 - [eppie.desktop-linux-x64.tar.gz](https://github.com/Eppie-io/Eppie-App/releases/latest/download/eppie.desktop-linux-x64.tar.gz) (x64 binaries)
 - [eppie.desktop-linux-arm64.tar.gz](https://github.com/Eppie-io/Eppie-App/releases/latest/download/eppie.desktop-linux-arm64.tar.gz) (arm64 binaries)
 - [eppie.desktop-snap-linux-x64.tar.gz](https://github.com/Eppie-io/Eppie-App/releases/latest/download/eppie.desktop-snap-linux-x64.tar.gz) (x64 snap package)
+- [eppie.desktop-snap-linux-arm64.tar.gz](https://github.com/Eppie-io/Eppie-App/releases/latest/download/eppie.desktop-snap-linux-arm64.tar.gz) (arm64 snap package)
 
 ### macOS
 
@@ -114,8 +127,8 @@ At launch Eppie will store the data using [IPFS](https://github.com/ipfs/ipfs) i
 
 ## Contribution
 
-First of all this is a pretty ambitiois project and we are greateful beyond measure for every bit of help from our community. If you decide to contribute, please create an issue first, or find an existing one, unless it's a very minor fix, like a typo.
+First of all this is a pretty ambitious project and we are grateful beyond measure for every bit of help from our community. If you decide to contribute, please create an issue first, or find an existing one, unless it's a very minor fix, like a typo.
 
 [Here](https://eppie.crowdin.com/eppie) you can help Eppie with localization.
 
-Also, feel free to [subscripe](https://eppie.io) to our waiting list. We might invite you for an interview or beta testing.
+Also, feel free to [subscribe](https://eppie.io) to our waiting list. We might invite you for an interview or beta testing.

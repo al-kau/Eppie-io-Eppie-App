@@ -27,7 +27,6 @@ using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Extensions.Logging;
-using Org.BouncyCastle.Tsp;
 using Tuvi.App.ViewModels.Common;
 using Tuvi.App.ViewModels.Services;
 using Tuvi.Core.Entities;
@@ -471,7 +470,14 @@ namespace Tuvi.App.ViewModels
             {
                 if (await MessageService.ShowRequestReviewMessageAsync().ConfigureAwait(true))
                 {
-                    await AppStoreService.RequestReviewAsync().ConfigureAwait(true);
+                    try
+                    {
+                        await AppStoreService.RequestReviewAsync().ConfigureAwait(true);
+                    }
+                    catch (NotImplementedException)
+                    {
+                        await LauncherService.LaunchAsync(new Uri(BrandService.GetGitHub())).ConfigureAwait(true);
+                    }
                 }
 
                 LocalSettingsService.RequestReviewCount = ReviewRequestsDisabled;
@@ -888,6 +894,38 @@ namespace Tuvi.App.ViewModels
             }
         }
 
+        private void ShowLanguageChangeWarning()
+        {
+            var title = GetLocalizedString("WarningProblemTitle");
+            var solution = GetLocalizedString("RestartApp");
+
+            var messageTemplate = GetLocalizedString("RestartApplication");
+            var brandName = BrandService.GetName();
+            var message = string.Format(messageTemplate, brandName);
+
+            var existing = Problems.FirstOrDefault(x => x.Title == title && x.SolutionText == solution && x.Email is null);
+            if (existing is null)
+            {
+                Problems.Add(new Problem()
+                {
+                    ViewModel = this,
+                    Title = title,
+                    SolutionText = solution,
+                    Email = null,
+                    Message = message,
+                    ActionCommand = new RelayCommand<Problem>((p) =>
+                    {
+                        CloseProblem(p);
+                        NavigationService.ExitApplication();
+                    })
+                });
+            }
+            else
+            {
+                existing.Message = message;
+            }
+        }
+
         private void LocalSettingsService_SettingChanged(object sender, SettingChangedEventArgs args)
         {
             try
@@ -895,6 +933,11 @@ namespace Tuvi.App.ViewModels
                 if (args.Name == nameof(LocalSettingsService.LogLevel))
                 {
                     LogEnabledWarning();
+                }
+
+                if (args.Name == nameof(LocalSettingsService.Language))
+                {
+                    ShowLanguageChangeWarning();
                 }
             }
             catch (Exception ex)

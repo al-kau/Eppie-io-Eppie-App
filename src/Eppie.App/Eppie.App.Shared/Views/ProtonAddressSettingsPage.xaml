@@ -1,0 +1,39 @@
+﻿<local:ProtonAddressSettingsPageBase x:Class="Tuvi.App.Shared.Views.ProtonAddressSettingsPage"
+                                     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                     xmlns:behaviors="using:Eppie.App.UI.Behaviors"
+                                     xmlns:controls="using:Tuvi.App.Shared.Controls"
+                                     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                     xmlns:extensions="using:Tuvi.App.Shared.Extensions"
+                                     xmlns:interactivity="using:Microsoft.Xaml.Interactivity"
+                                     xmlns:local="using:Tuvi.App.Shared.Views"
+                                     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                     xmlns:viewmodels="using:Tuvi.App.ViewModels"
+                                     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+                                     mc:Ignorable="d">
+
+    <local:ProtonAddressSettingsPageBase.DataContext>
+        <viewmodels:ProtonAddressSettingsPageViewModel />
+    </local:ProtonAddressSettingsPageBase.DataContext>
+
+    <interactivity:Interaction.Behaviors>
+        <behaviors:DialogBehavior ApplyCommand="{x:Bind ViewModel.ApplySettingsCommand}"
+                                  CancelCommand="{x:Bind ViewModel.CancelSettingsCommand}"
+                                  HandleErrorCommand="{x:Bind ViewModel.HandleErrorCommand}" />
+    </interactivity:Interaction.Behaviors>
+
+    <controls:AddressSettingsView x:Uid="AddressSettingsView"
+                                  ApplyCommand="{x:Bind ViewModel.ApplySettingsCommand}"
+                                  CancelCommand="{x:Bind ViewModel.CancelSettingsCommand}"
+                                  IsApplying="{x:Bind ViewModel.IsWaitingResponse, Mode=OneWay}"
+                                  IsRemoveButtonVisible="{x:Bind ViewModel.IsCreatingAccountMode, Mode=OneWay, Converter={StaticResource InverseBoolConverter}}"
+                                  RemoveCommand="{x:Bind ViewModel.RemoveAccountCommand}">
+        <controls:ProtonSettingsControl Margin="0,12,0,0"
+                                        CreateHybridAddressCommand="{x:Bind ViewModel.CreateHybridAddressCommand, Mode=OneWay}"
+                                        IsAdvancedSettingsModeActive="{x:Bind ViewModel.IsAdvancedSettingsModeActive, Mode=TwoWay}"
+                                        IsEmailReadOnly="{x:Bind ViewModel.IsEmailReadonly, Mode=OneWay}"
+                                        ProtonAddressSettingsModel="{x:Bind ViewModel.AddressSettingsModel, Mode=OneWay}"
+                                        ShowHybridAddressButton="{x:Bind ViewModel.ShowHybridAddressButton, Mode=OneWay}" />
+    </controls:AddressSettingsView>
+
+</local:ProtonAddressSettingsPageBase>

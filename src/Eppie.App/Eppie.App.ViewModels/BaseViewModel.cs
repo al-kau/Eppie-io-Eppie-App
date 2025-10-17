@@ -41,7 +41,7 @@ namespace Tuvi.App.ViewModels
         }
 
         protected Tuvi.Core.ITuviMail Core { get { return CoreProvider(); } }
-        private Func<Tuvi.Core.ITuviMail> CoreProvider { get; set; }
+        protected Func<Tuvi.Core.ITuviMail> CoreProvider { get; private set; }
         public void SetCoreProvider(Func<Tuvi.Core.ITuviMail> coreProvider)
         {
             CoreProvider = coreProvider;
@@ -86,7 +86,7 @@ namespace Tuvi.App.ViewModels
         }
 
         public ICommand SupportDevelopmentCommand => new AsyncRelayCommand(SupportDevelopmentAsync);
-        public ICommand PgpKeysCommand => new RelayCommand(() => NavigationService?.Navigate(nameof(PgpKeysPageViewModel)));
+        public ICommand OpenAllPgpKeysCommand => new RelayCommand(() => NavigationService?.Navigate(nameof(PgpKeysPageViewModel)));
 
         private bool _isStorePaymentProcessor = true;
         public bool IsStorePaymentProcessor
@@ -234,28 +234,39 @@ namespace Tuvi.App.ViewModels
 
             if (account.Email.IsDecentralized)
             {
-                NavigationService?.Navigate(nameof(DecentralizedAccountSettingsPageViewModel), account);
+                if (account.Email.Network == NetworkType.Eppie)
+                {
+                    NavigationService?.Navigate(nameof(EppieAddressSettingsPageViewModel), account);
+                }
+                else if (account.Email.Network == NetworkType.Bitcoin)
+                {
+                    NavigationService?.Navigate(nameof(BitcoinAddressSettingsPageViewModel), account);
+                }
+                else if (account.Email.Network == NetworkType.Ethereum)
+                {
+                    NavigationService?.Navigate(nameof(EthereumAddressSettingsPageViewModel), account);
+                }
             }
             else if (Proton.Extensions.IsProton(account.Email))
             {
                 if (isReloginNeeded)
                 {
-                    NavigationService?.Navigate(nameof(ProtonAccountSettingsPageViewModel), new ProtonAccountSettingsPageViewModel.NeedReloginData { Account = account });
+                    NavigationService?.Navigate(nameof(ProtonAddressSettingsPageViewModel), new ProtonAddressSettingsPageViewModel.NeedReloginData { Account = account });
                 }
                 else
                 {
-                    NavigationService?.Navigate(nameof(ProtonAccountSettingsPageViewModel), account);
+                    NavigationService?.Navigate(nameof(ProtonAddressSettingsPageViewModel), account);
                 }
             }
             else
             {
                 if (isReloginNeeded)
                 {
-                    NavigationService?.Navigate(nameof(AccountSettingsPageViewModel), new AccountSettingsPageViewModel.NeedReloginData { Account = account });
+                    NavigationService?.Navigate(nameof(EmailAddressSettingsPageViewModel), new EmailAddressSettingsPageViewModel.NeedReloginData { Account = account });
                 }
                 else
                 {
-                    NavigationService?.Navigate(nameof(AccountSettingsPageViewModel), account);
+                    NavigationService?.Navigate(nameof(EmailAddressSettingsPageViewModel), account);
                 }
             }
         }

@@ -56,7 +56,7 @@ namespace Tuvi.App.Shared.Views
 
         public ICommand ChangeContactPictureCommand => new AsyncRelayCommand<ContactItem>(ChangeContactPictureAsync);
 
-        public ICommand ShowAboutPageCommand => new RelayCommand(ToggleAboutPane);
+        public ICommand ShowAboutPageCommand => new RelayCommand(ShowAboutPage);
 
         public ICommand OpenIdentityManagerCommand => new RelayCommand(ToggleIdentityManagerPane);
 
@@ -85,7 +85,7 @@ namespace Tuvi.App.Shared.Views
         {
             if (args.IsSettingsInvoked)
             {
-                ToggleSettingsPane();
+                ShowAppSettings();
             }
             else if (args.InvokedItemContainer is DependencyObject dependencyObject)
             {
@@ -93,38 +93,9 @@ namespace Tuvi.App.Shared.Views
             }
         }
 
-        private bool _isAboutOpen;
-        private void ToggleAboutPane()
+        private void ShowAboutPage()
         {
-            if (splitView.IsPaneOpen && _isAboutOpen)
-            {
-                ClosePane();
-            }
-            else
-            {
-                splitView.IsPaneOpen = true;
-                paneFrame.Navigate(typeof(AboutPage));
-                _isAboutOpen = true;
-                _isSettingsOpen = false;
-                _isIdentityManagerOpen = false;
-            }
-        }
-
-        private bool _isSettingsOpen;
-        private void ToggleSettingsPane()
-        {
-            if (splitView.IsPaneOpen && _isSettingsOpen)
-            {
-                ClosePane();
-            }
-            else
-            {
-                splitView.IsPaneOpen = true;
-                paneFrame.Navigate(typeof(SettingsPage));
-                _isSettingsOpen = true;
-                _isAboutOpen = false;
-                _isIdentityManagerOpen = false;
-            }
+            contentFrame.Navigate(typeof(AboutPage));
         }
 
         private bool _isIdentityManagerOpen;
@@ -145,8 +116,6 @@ namespace Tuvi.App.Shared.Views
             splitView.IsPaneOpen = true;
             paneFrame.Navigate(typeof(IdentityManagerPage));
             _isIdentityManagerOpen = true;
-            _isSettingsOpen = false;
-            _isAboutOpen = false;
         }
 
         private async void OpenIdentityManagerPaneIfNeeded()
@@ -168,8 +137,6 @@ namespace Tuvi.App.Shared.Views
         {
             splitView.IsPaneOpen = false;
             NavigationMenu.SelectedItem = null;
-            _isAboutOpen = false;
-            _isSettingsOpen = false;
             _isIdentityManagerOpen = false;
         }
 
@@ -177,6 +144,11 @@ namespace Tuvi.App.Shared.Views
         {
             ViewModel.OnShowAllMessages();
             contentFrame.Navigate(typeof(AllMessagesPage), new AllMessagesPageViewModel.NavigationData() { ErrorHandler = this });
+        }
+
+        private void ShowAppSettings()
+        {
+            contentFrame.Navigate(typeof(AppSettingsPage), new AllMessagesPageViewModel.NavigationData() { ErrorHandler = this });
         }
 
         private async Task RenameContactAsync(ContactItem contactItem)
