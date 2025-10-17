@@ -1,0 +1,38 @@
+﻿<Page
+    x:Class="ProtonLogin.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:ProtonLogin.Controls"
+    xmlns:local="using:ProtonLogin"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}"
+    >
+    <ScrollViewer IsTabStop="True">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="240" />
+            </Grid.RowDefinitions>
+            <controls:ProtonSiginControl
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                ErrorOccurred="OnErrorOccurred"
+                OutputChanged="OnOutputChanged"
+                />
+            <Border
+                Grid.Row="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="White"
+                >
+                <TextBlock
+                    x:Name="OutputBox"
+                    Grid.Row="1"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    IsTextSelectionEnabled="True"
+                    />
+            </Border>
+        </Grid>
+
+    </ScrollViewer>
+</Page>
