@@ -11,5 +11,6 @@
 
     <Grid>
         <WebView2 WebMessageReceived="OnWebMessageReceived" Source="{x:Bind CaptchaUri, Mode=OneWay}"/>
+        <Button Content="Cancel" Click="OnCancel" Background="Red" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="44,24"/>
     </Grid>
 </UserControl>
