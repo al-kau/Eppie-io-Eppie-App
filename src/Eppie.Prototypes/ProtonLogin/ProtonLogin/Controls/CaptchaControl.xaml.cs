@@ -8,14 +8,11 @@ public sealed partial class CaptchaControl : UserControl
 {
     public class HumanVerificationEventArgs : EventArgs
     {
-        public bool IsSuccess { get; }
-
         public string Type { get; }
         public string Token { get; }
 
-        public HumanVerificationEventArgs(bool isSuccess, string type, string token)
+        public HumanVerificationEventArgs(string type, string token)
         {
-            IsSuccess = isSuccess;
             Type = type;
             Token = token;
         }
@@ -40,6 +37,7 @@ public sealed partial class CaptchaControl : UserControl
     }
 
     public event EventHandler<HumanVerificationEventArgs>? HumanVerificationCompleted;
+    public event EventHandler<EventArgs>? HumanVerificationCancelled;
 
     public Uri CaptchaUri
     {
@@ -66,7 +64,12 @@ public sealed partial class CaptchaControl : UserControl
 
         if (json?.IsValid() is true)
         {
-            HumanVerificationCompleted?.Invoke(this, new HumanVerificationEventArgs(true, "captcha", json.Token ?? string.Empty));
+            HumanVerificationCompleted?.Invoke(this, new HumanVerificationEventArgs("captcha", json.Token ?? string.Empty));
         }
+    }
+
+    private void OnCancel(object sender, RoutedEventArgs e)
+    {
+        HumanVerificationCancelled?.Invoke(this, EventArgs.Empty);
     }
 }

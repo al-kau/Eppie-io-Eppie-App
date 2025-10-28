@@ -107,26 +107,38 @@ public sealed partial class ProtonSiginControl : UserControl
     {
         var tcs = new TaskCompletionSource<(bool,string,string)>();
 
-        CaptchaControl.HumanVerificationCompleted += OnEvent;
+        CaptchaControl.HumanVerificationCompleted += OnCompleted;
+        CaptchaControl.HumanVerificationCancelled += OnCancelled;
         SetCaptchaUri(uri);
 
         GotoPhase(SignInPhase.Captcha);
 
         return tcs.Task;
 
-        void OnEvent(object? sender, CaptchaControl.HumanVerificationEventArgs eventArgs)
+        void OnCompleted(object? sender, CaptchaControl.HumanVerificationEventArgs eventArgs)
         {
-            CaptchaControl.HumanVerificationCompleted -= OnEvent;
-
+            CaptchaControl.HumanVerificationCompleted -= OnCompleted;
+            CaptchaControl.HumanVerificationCancelled -= OnCancelled;
 
             OutputChanged?.Invoke(this, new OutputEventArgs($$"""
-                Success: {{eventArgs.IsSuccess}}
+                Human Verification: Completed
                 Type: {{eventArgs.Type}}
                 Token: {{eventArgs.Token}}
                 """));
 
-            tcs.SetResult((false, eventArgs.Type, eventArgs.Token));
+            tcs.SetResult((true, eventArgs.Type, eventArgs.Token));
         }
+
+        void OnCancelled(object? sender, EventArgs eventArgs)
+        {
+            CaptchaControl.HumanVerificationCompleted -= OnCompleted;
+            CaptchaControl.HumanVerificationCancelled -= OnCancelled;
+
+            OutputChanged?.Invoke(this, new OutputEventArgs("Human Verification: Cancelled"));
+
+            tcs.SetResult((false, string.Empty, string.Empty));
+        }
+
     }
 
 
@@ -178,7 +190,6 @@ public sealed partial class ProtonSiginControl : UserControl
             tcs.SetResult(eventArgs.MailboxPassword);
         }
     }
-
 
     private async Task RunAsync(Action action)
     {
