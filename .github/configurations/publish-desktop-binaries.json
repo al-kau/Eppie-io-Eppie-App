@@ -18,6 +18,7 @@
             ]
         },
         "artifact": {
+            "name": "Eppie.Desktop-win-x64",
             "tool": "7z"
         }
     },
@@ -40,6 +41,7 @@
             ]
         },
         "artifact": {
+            "name": "Eppie.Desktop-win-arm64",
             "tool": "7z"
         }
     },
@@ -62,6 +64,7 @@
             ] 
         },
         "artifact": {
+            "name": "Eppie.Desktop-linux-arm64",
             "tool": "tar"
         }
     },
@@ -84,6 +87,7 @@
             ] 
         },
         "artifact": {
+            "name": "Eppie.Desktop-linux-arm64",
             "tool": "tar"
         }
     }

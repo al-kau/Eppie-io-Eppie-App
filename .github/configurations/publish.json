@@ -7,6 +7,10 @@
         "os":["linux","all"],
         "framework":["desktop","all"]
     },
+    "desktop-flatpak":{
+        "os":["linux","all"],
+        "framework":["desktop","all"]
+    },
     "desktop-app":{
         "os":["macos","all"],
         "framework":["desktop","all"]

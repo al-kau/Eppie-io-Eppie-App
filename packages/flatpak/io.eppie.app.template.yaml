@@ -1,0 +1,39 @@
+id: io.eppie.app
+
+runtime: org.gnome.Platform
+runtime-version: '49'
+sdk: org.gnome.Sdk
+
+command: Eppie
+finish-args:
+  # X11 + XShm access
+  - --share=ipc
+  - --socket=x11
+  # GPU acceleration if needed
+  - --device=dri
+  # Needs to talk to the network
+  - --share=network
+
+modules:
+  - name: binary
+    buildsystem: simple
+    build-commands:
+      - mkdir -p "${FLATPAK_DEST}/bin"
+
+      # Extract binary
+      - tar -xf eppie.tar.gz -C "${FLATPAK_DEST}/bin"
+
+      # Copy desktop file & icon
+      - install -D --mode=644 --target-directory=${FLATPAK_DEST}/share/applications/ io.eppie.app.desktop
+      - install -D --mode=644 --target-directory=${FLATPAK_DEST}/share/icons/hicolor/scalable/apps/ io.eppie.app.svg
+
+      # ToDo: Add metainfo
+
+    sources:
+      - type: dir
+        path: .
+
+      - type: file
+        # note: The path is added using a GitHub action script.
+        path: $EPPIE_ARTIFACT
+        dest-filename: eppie.tar.gz

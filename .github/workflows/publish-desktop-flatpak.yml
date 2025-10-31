@@ -1,0 +1,203 @@
+###############################################################################
+#
+#   Copyright 2025 Eppie(https://eppie.io)
+#
+#   Licensed under the Apache License, Version 2.0 (the "License");
+#   you may not use this file except in compliance with the License.
+#   You may obtain a copy of the License at
+#
+#       http://www.apache.org/licenses/LICENSE-2.0
+#
+#   Unless required by applicable law or agreed to in writing, software
+#   distributed under the License is distributed on an "AS IS" BASIS,
+#   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#   See the License for the specific language governing permissions and
+#   limitations under the License.
+#
+###############################################################################
+
+---
+
+name: Publish Desktop [flatpak]
+
+on: # yamllint disable-line rule:truthy
+  workflow_dispatch:
+    inputs:
+      architecture:
+        type: choice
+        default: all
+        options:
+          - all
+          - arm64
+          - x64
+      dotnet-verbosity:
+        type: choice
+        default: minimal
+        options:
+          - quiet
+          - minimal
+          - normal
+          - detailed
+          - diagnostic
+
+  workflow_call:
+    inputs:
+      architecture:
+        type: string
+        required: true
+      dotnet-verbosity:
+        type: string
+        required: true
+
+jobs:
+
+  prepare:
+    name: Prepare
+    runs-on: ubuntu-latest
+
+    outputs:
+      matrix: ${{ steps.publish-config.outputs.matrix }}
+      interrupt-publication: ${{ steps.publish-config.outputs.is-empty }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+
+      - name: Read the binaries publication configuration
+        id: publish-config
+        uses: finebits/github-actions/toolset/select-configuration@39ec051fda4f00ab2ac5ffb6336ab0ea1ad9ad0f # v3.0.0
+        with:
+          json-file: ./.github/configurations/publish-desktop-flatpak.json
+          keywords: |
+            linux
+            ${{ inputs.architecture }}
+
+  publish-desktop-binaries:
+    name: Publish Desktop Binaries
+    needs: prepare
+    # Todo: Check if binaries exsist
+    if: needs.prepare.outputs.interrupt-publication == 'false'
+    uses: ./.github/workflows/publish-desktop-binaries.yml
+    with:
+      os: linux
+      architecture: ${{ inputs.architecture }}
+      dotnet-verbosity: ${{ inputs.dotnet-verbosity }}
+    secrets: inherit
+
+  publish:
+    name: Publish ${{ matrix.publish.runtime }}
+    needs: publish-desktop-binaries
+    if: needs.prepare.outputs.interrupt-publication == 'false'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      binaries-path: './.binaries/'
+      publish-path: './.publish/${{ matrix.publish.runtime }}'
+      artifacts-path: './.artifacts/${{ matrix.publish.runtime }}'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download Linux Artifacts
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5.0.0
+        with:
+          path: "${{ env.binaries-path }}"
+          pattern: Eppie.Desktop-${{ matrix.publish.runtime }}*
+
+      - name: Install Flatpak Prerequisites
+        shell: bash
+        run: |
+
+          # linux_release=$(lsb_release --release --short)
+
+          sudo apt-get update -y
+
+          # ???
+          # WebView2 requirements for Linux - https://platform.uno/docs/articles/controls/WebView.html#x11-specifics
+          sudo apt-get install -y libgtk-3-0 libwebkit2gtk-4.1-dev
+
+          # Utility to convert icon
+          # ???
+          # sudo apt-get install -y inkscape
+
+          # Flatpak package requirements for Ubuntu - 
+          sudo apt-get install -y flatpak flatpak-builder
+          flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+          ### ???
+          # flatpak install -y flathub org.gnome.Platform//48 org.gnome.Sdk//48
+          # flatpak install -y flathub org.flatpak.Builder
+
+      - name: Assign version
+        id: assign-version
+        uses: ./.github/actions/assign-version
+
+      - name: Prepare Publish
+        shell: bash
+        run: |
+          workspace='${{ github.workspace }}'
+          project='${{ matrix.publish.project }}'
+          project_dir="$(dirname "$project")"
+          runtime=${{ matrix.publish.runtime }}
+
+          eppie_artifact=$(find ${{ env.binaries-path }} -type f -name "*$runtime*.tar.gz")
+
+          template=$(cat $workspace/packages/flatpak/io.eppie.app.template.yaml)
+          echo "${template//'$EPPIE_ARTIFACT'/$eppie_artifact}" > $workspace/packages/flatpak/io.eppie.app.yaml
+
+          icon_svg="$workspace/$project_dir/Assets/Icons/icon.svg"
+          cp $icon_svg $workspace/packages/flatpak/io.eppie.app.svg
+
+      - name: Publish
+        if: matrix.publish.tool == 'dotnet'
+        shell: bash
+        run: |
+          workspace='${{ github.workspace }}'
+
+          publish_path="${{ env.publish-path }}"
+          bundle_name="eppie-${{ matrix.publish.runtime }}.flatpak"
+
+          # Build
+          flatpak-builder --force-clean --user --disable-cache --install-deps-from=flathub --repo=eppie-repo eppie/flatpak packages/flatpak/io.eppie.app.yaml
+
+          # Bundle
+          flatpak build-bundle eppie-repo "$publish_path/$bundle_name" io.eppie.app
+
+          # Lint flathub https://docs.flathub.org/docs/for-app-authors/linter
+
+      - name: Prepare Artifacts
+        shell: bash
+        run: |
+          artifact_path="${{ env.artifacts-path }}"
+          publish_path="${{ env.publish-path }}"
+          tool='${{ matrix.artifact.tool }}'
+
+          artifact_name="eppie.desktop-flatpak-${{ matrix.publish.runtime }}"
+
+          mkdir -p "$artifact_path"
+
+          if [[ "$tool" == "tar" ]]; then
+            tar -czf "${artifact_path}/${artifact_name}.tar.gz" -C "$publish_path" $(cd "$publish_path"; ls *.flatpak) && echo "Archiving of the artifact '$artifact_name' has been completed successfully." || echo "::warning::Failed to archive artifact '$artifact_name'"
+          elif [[ "$tool" == "7z"  ]]; then
+            7z a -tzip "${artifact_path}/${artifact_name}.zip" "$publish_path/*.flatpak" && echo "Archiving of the artifact '$artifact_name' has been completed successfully." || echo "::warning::Failed to archive artifact '$artifact_name'"
+          elif [[ "$tool" == "cp" ]]; then
+            cp -r ${publish_path}/*.flatpak ${artifact_path}/ && echo "Copying of the artifact has been completed successfully." || echo "::warning::Failed to copy artifact"
+          else
+            echo "::warning::Unknown artifact tool: '$tool'"
+          fi
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: ${{ matrix.artifact.name }} [${{ steps.assign-version.outputs.artifact-version }}]
+          path: ${{ env.artifacts-path }}

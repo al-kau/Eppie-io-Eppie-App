@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=Eppie
+Comment=Eppie
+Exec=Eppie
+Icon=io.eppie.app
+Terminal=false
+Categories=Network;Email;

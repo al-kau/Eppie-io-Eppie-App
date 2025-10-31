@@ -1,0 +1,34 @@
+[
+    {
+        "keywords": [
+            "linux",
+            "x64",
+            "all"
+        ],
+        "os": "ubuntu-latest",
+        "publish": {
+            "project": "./src/Eppie.App/Eppie.App/Eppie.App.csproj",
+            "runtime": "linux-x64"
+        },
+        "artifact": {
+            "name": "Eppie.Desktop-flatpak-linux-x64",
+            "tool": "tar"
+        }
+    },
+    {
+        "keywords": [
+            "linux",
+            "arm64",
+            "all"
+        ],
+        "os": "ubuntu-24.04-arm",
+        "publish": {
+            "project": "./src/Eppie.App/Eppie.App/Eppie.App.csproj",
+            "runtime": "linux-arm64"
+        },
+        "artifact": {
+            "name": "Eppie.Desktop-flatpak-linux-arm64",
+            "tool": "tar"
+        }
+    }
+]
