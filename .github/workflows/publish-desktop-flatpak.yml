@@ -169,10 +169,10 @@ jobs:
       - name: Publish
         shell: bash
         run: |
-          workspace='${{ github.workspace }}'
-
           publish_path="${{ env.publish-path }}"
           bundle_name="eppie-${{ matrix.publish.runtime }}.flatpak"
+
+          mkdir -p $publish_path
 
           # Build
           flatpak-builder --force-clean --user --disable-cache --install-deps-from=flathub --repo=eppie-repo eppie/flatpak packages/flatpak/io.eppie.app.yaml
