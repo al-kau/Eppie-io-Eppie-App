@@ -58,6 +58,7 @@ jobs:
     outputs:
       matrix: ${{ steps.publish-config.outputs.matrix }}
       interrupt-publication: ${{ steps.publish-config.outputs.is-empty }}
+      need-publish-binaries: ${{ steps.set-outputs.outputs.need-publish-binaries }}
 
     steps:
       - name: Checkout
@@ -74,11 +75,18 @@ jobs:
             linux
             ${{ inputs.architecture }}
 
+      - name: Set outputs
+        id: set-outputs
+        shell: bash
+        run: |
+          event_name=${{ github.event_name }}
+          need_publish_binaries=$([[ $event_name == 'workflow_dispatch' ]] && echo "true" || echo "false")
+          echo "need-publish-binaries=$need_publish_binaries" >> $GITHUB_OUTPUT
+
   publish-desktop-binaries:
     name: Publish Desktop Binaries
     needs: prepare
-    # Todo: Check if binaries exsist
-    if: needs.prepare.outputs.interrupt-publication == 'false'
+    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.need-publish-binaries == 'true'
     uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: linux
@@ -89,7 +97,7 @@ jobs:
   publish:
     name: Publish Desktop ${{ matrix.publish.runtime }} flatpak
     needs: [ prepare, publish-desktop-binaries ]
-    if: always() && needs.prepare.outputs.interrupt-publication == 'false'
+    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || needs.prepare.need-publish-binaries == 'false' )
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
@@ -97,9 +105,10 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      binaries-path: './packages/flatpak/.binaries/'
+      binaries-path: './.binaries/'
       publish-path: './.publish/${{ matrix.publish.runtime }}'
       artifacts-path: './.artifacts/${{ matrix.publish.runtime }}'
+      flatpak-root-path: './packages/flatpak/'
 
     steps:
       - name: Checkout
@@ -149,15 +158,10 @@ jobs:
           project='${{ matrix.publish.project }}'
           project_dir="$(dirname "$project")"
           runtime=${{ matrix.publish.runtime }}
+          flatpak_root=${{ env.flatpak-root-path }}
 
           eppie_artifact=$(find ${{ env.binaries-path }} -type f -name "*$runtime*.tar.gz")
-
-          echo $eppie_artifact
-
-          template=$(cat $workspace/packages/flatpak/io.eppie.app.template.yaml)
-          echo "${template//'$EPPIE_ARTIFACT'/$eppie_artifact}" > $workspace/packages/flatpak/io.eppie.app.yaml
-
-          cat $workspace/packages/flatpak/io.eppie.app.yaml
+          cp $eppie_artifact $flatpak_root/eppie.tar.gz
 
           icon_svg="$workspace/$project_dir/Assets/Icons/icon.svg"
           cp $icon_svg $workspace/packages/flatpak/io.eppie.app.svg

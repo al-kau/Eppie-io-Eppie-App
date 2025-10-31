@@ -32,8 +32,3 @@ modules:
     sources:
       - type: dir
         path: .
-
-      - type: file
-        # note: The path is added using a GitHub action script.
-        path: $EPPIE_ARTIFACT
-        dest-filename: eppie.tar.gz
