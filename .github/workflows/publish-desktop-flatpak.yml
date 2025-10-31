@@ -87,9 +87,9 @@ jobs:
     secrets: inherit
 
   publish:
-    name: Publish ${{ matrix.publish.runtime }} flatpak
+    name: Publish Desktop ${{ matrix.publish.runtime }} flatpak
     needs: [ prepare, publish-desktop-binaries ]
-    if: needs.prepare.outputs.interrupt-publication == 'false'
+    if: always() && needs.prepare.outputs.interrupt-publication == 'false'
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
@@ -97,7 +97,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      binaries-path: './.binaries/'
+      binaries-path: './packages/flatpak/.binaries/'
       publish-path: './.publish/${{ matrix.publish.runtime }}'
       artifacts-path: './.artifacts/${{ matrix.publish.runtime }}'
 
@@ -152,8 +152,12 @@ jobs:
 
           eppie_artifact=$(find ${{ env.binaries-path }} -type f -name "*$runtime*.tar.gz")
 
+          echo $eppie_artifact
+
           template=$(cat $workspace/packages/flatpak/io.eppie.app.template.yaml)
           echo "${template//'$EPPIE_ARTIFACT'/$eppie_artifact}" > $workspace/packages/flatpak/io.eppie.app.yaml
+
+          cat $workspace/packages/flatpak/io.eppie.app.yaml
 
           icon_svg="$workspace/$project_dir/Assets/Icons/icon.svg"
           cp $icon_svg $workspace/packages/flatpak/io.eppie.app.svg
