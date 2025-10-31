@@ -159,7 +159,6 @@ jobs:
           cp $icon_svg $workspace/packages/flatpak/io.eppie.app.svg
 
       - name: Publish
-        if: matrix.publish.tool == 'dotnet'
         shell: bash
         run: |
           workspace='${{ github.workspace }}'
