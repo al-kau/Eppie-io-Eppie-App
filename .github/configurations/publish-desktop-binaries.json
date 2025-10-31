@@ -64,7 +64,7 @@
             ] 
         },
         "artifact": {
-            "name": "Eppie.Desktop-linux-arm64",
+            "name": "Eppie.Desktop-linux-x64",
             "tool": "tar"
         }
     },

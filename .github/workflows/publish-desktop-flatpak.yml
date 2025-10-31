@@ -87,7 +87,7 @@ jobs:
     secrets: inherit
 
   publish:
-    name: Publish ${{ matrix.publish.runtime }}
+    name: Publish ${{ matrix.publish.runtime }} flatpak
     needs: publish-desktop-binaries
     if: needs.prepare.outputs.interrupt-publication == 'false'
     strategy:
