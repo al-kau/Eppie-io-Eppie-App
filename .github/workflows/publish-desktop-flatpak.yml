@@ -86,7 +86,7 @@ jobs:
   publish-desktop-binaries:
     name: Publish Desktop Binaries
     needs: prepare
-    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.need-publish-binaries == 'true'
+    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.outputs.need-publish-binaries == 'true'
     uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: linux
