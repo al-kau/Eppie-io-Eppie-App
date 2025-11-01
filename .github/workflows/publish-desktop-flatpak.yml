@@ -48,6 +48,8 @@ on: # yamllint disable-line rule:truthy
       dotnet-verbosity:
         type: string
         required: true
+      is-binaries-ready:
+        type: boolean
 
 jobs:
 
@@ -58,7 +60,6 @@ jobs:
     outputs:
       matrix: ${{ steps.publish-config.outputs.matrix }}
       interrupt-publication: ${{ steps.publish-config.outputs.is-empty }}
-      need-publish-binaries: ${{ steps.set-outputs.outputs.need-publish-binaries }}
 
     steps:
       - name: Checkout
@@ -75,19 +76,10 @@ jobs:
             linux
             ${{ inputs.architecture }}
 
-      - name: Set outputs
-        id: set-outputs
-        shell: bash
-        run: |
-          event_name=${{ github.event_name }}
-          need_publish_binaries=$([[ $event_name == 'workflow_dispatch' ]] && echo "true" || echo "false")
-          echo "need bin: $need_publish_binaries"
-          echo "need-publish-binaries=$need_publish_binaries" >> $GITHUB_OUTPUT
-
   publish-desktop-binaries:
     name: Publish Desktop Binaries
     needs: prepare
-    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.outputs.need-publish-binaries == 'true'
+    if: needs.prepare.outputs.interrupt-publication == 'false' && inputs.is-binaries-ready == 'false'
     uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: linux
@@ -98,7 +90,7 @@ jobs:
   publish:
     name: Publish Desktop ${{ matrix.publish.runtime }} flatpak
     needs: [ prepare, publish-desktop-binaries ]
-    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || needs.prepare.need-publish-binaries == 'false' )
+    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || inputs.is-binaries-ready == 'true' )
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
