@@ -78,6 +78,7 @@ jobs:
       publish-binaries: ${{ steps.packages.outputs.binaries }}
       publish-app: ${{ steps.packages.outputs.app }}
       publish-snap: ${{ steps.packages.outputs.snap }}
+      publish-flatpak: ${{ steps.packages.outputs.flatpak }}
 
     steps:
       - name: Checkout
@@ -128,6 +129,12 @@ jobs:
           publish_snap=$([[ $os_suitable == 'true' && $framework_suitable == 'true' ]] && echo "true" || echo "false")
           echo "snap=$publish_snap" >> $GITHUB_OUTPUT
 
+          # Publish Desktop Linux flatpak package
+          os_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-flatpak.os, steps.init-params.outputs.os) }}"
+          framework_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-flatpak.framework, steps.init-params.outputs.framework) }}"
+          publish_flatpak=$([[ $os_suitable == 'true' && $framework_suitable == 'true' ]] && echo "true" || echo "false")
+          echo "flatpak=$publish_flatpak" >> $GITHUB_OUTPUT
+
           # Publish Desktop Mac app package
           os_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-app.os, steps.init-params.outputs.os) }}"
           framework_suitable="${{ contains(fromJSON(steps.publish-config.outputs.content).desktop-app.framework, steps.init-params.outputs.framework) }}"
@@ -165,10 +172,20 @@ jobs:
       dotnet-verbosity: ${{ needs.prepare.outputs.dotnet-verbosity }}
     secrets: inherit
 
+  publish-desktop-flatpak:
+    name: Publish Desktop [flatpak]
+    needs: [ prepare, publish-desktop-binaries ]
+    if: ${{ needs.prepare.outputs.publish-flatpak == 'true' }}
+    uses: ./.github/workflows/publish-desktop-flatpak.yml
+    with:
+      architecture: ${{ needs.prepare.outputs.publish-arch }}
+      dotnet-verbosity: ${{ needs.prepare.outputs.dotnet-verbosity }}
+    secrets: inherit
+
   upload-assets:
     name: Upload Assets
     if: ${{ github.event_name == 'release' && !cancelled() && !failure() }}
-    needs: [ publish-desktop-binaries, publish-desktop-snap, publish-desktop-app ]
+    needs: [ publish-desktop-binaries, publish-desktop-snap, publish-desktop-app, publish-desktop-flatpak ]
     runs-on: ubuntu-latest
     permissions:
       contents: write
