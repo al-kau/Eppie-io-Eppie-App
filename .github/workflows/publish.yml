@@ -180,6 +180,7 @@ jobs:
     with:
       architecture: ${{ needs.prepare.outputs.publish-arch }}
       dotnet-verbosity: ${{ needs.prepare.outputs.dotnet-verbosity }}
+      is-binaries-ready: ${{ needs.publish-desktop-binaries.result == 'success' }}
     secrets: inherit
 
   upload-assets:

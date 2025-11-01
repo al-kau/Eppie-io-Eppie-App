@@ -60,12 +60,22 @@ jobs:
     outputs:
       matrix: ${{ steps.publish-config.outputs.matrix }}
       interrupt-publication: ${{ steps.publish-config.outputs.is-empty }}
+      is-binaries-ready: ${{ steps.init-params.outputs.is-binaries-ready }}
 
     steps:
       - name: Checkout
         uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
         with:
           fetch-depth: 0
+
+      - name: Initialize parameters
+        id: init-params
+        shell: bash
+        run: |
+          is_binaries_ready="${{ github.event.inputs.is-binaries-ready }}"
+
+          is_binaries_ready=[[ -z $is_binaries_ready ]] && echo "false" || echo $is_binaries_ready
+          echo "is-binaries-ready=$is_binaries_ready" >> $GITHUB_OUTPUT
 
       - name: Read the binaries publication configuration
         id: publish-config
@@ -79,7 +89,7 @@ jobs:
   publish-desktop-binaries:
     name: Publish Desktop Binaries
     needs: prepare
-    if: needs.prepare.outputs.interrupt-publication == 'false' && inputs.is-binaries-ready == 'false'
+    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.outputs.is-binaries-ready == 'false'
     uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: linux
@@ -90,7 +100,7 @@ jobs:
   publish:
     name: Publish Desktop ${{ matrix.publish.runtime }} flatpak
     needs: [ prepare, publish-desktop-binaries ]
-    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || inputs.is-binaries-ready == 'true' )
+    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || needs.prepare.outputs.is-binaries-ready == 'true' )
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
