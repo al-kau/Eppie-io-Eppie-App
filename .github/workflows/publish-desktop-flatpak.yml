@@ -81,6 +81,7 @@ jobs:
         run: |
           event_name=${{ github.event_name }}
           need_publish_binaries=$([[ $event_name == 'workflow_dispatch' ]] && echo "true" || echo "false")
+          echo "need bin: $need_publish_binaries"
           echo "need-publish-binaries=$need_publish_binaries" >> $GITHUB_OUTPUT
 
   publish-desktop-binaries:
@@ -135,17 +136,9 @@ jobs:
           # WebView2 requirements for Linux - https://platform.uno/docs/articles/controls/WebView.html#x11-specifics
           sudo apt-get install -y libgtk-3-0 libwebkit2gtk-4.1-dev
 
-          # Utility to convert icon
-          # ???
-          # sudo apt-get install -y inkscape
-
           # Flatpak package requirements for Ubuntu - 
           sudo apt-get install -y flatpak flatpak-builder
           flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-          ### ???
-          # flatpak install -y flathub org.gnome.Platform//48 org.gnome.Sdk//48
-          # flatpak install -y flathub org.flatpak.Builder
 
       - name: Assign version
         id: assign-version
@@ -180,7 +173,7 @@ jobs:
           # Bundle
           flatpak build-bundle eppie-repo "$publish_path/$bundle_name" io.eppie.app
 
-          # Lint flathub https://docs.flathub.org/docs/for-app-authors/linter
+          # ToDo: Maybe we should add Lint for flathub (https://docs.flathub.org/docs/for-app-authors/linter)
 
       - name: Prepare Artifacts
         shell: bash
