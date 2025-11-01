@@ -50,6 +50,8 @@ on: # yamllint disable-line rule:truthy
         required: true
       is-binaries-ready:
         type: boolean
+        required: false
+        default: false
 
 jobs:
 
@@ -72,10 +74,8 @@ jobs:
         id: init-params
         shell: bash
         run: |
-          is_binaries_ready="${{ github.event.inputs.is-binaries-ready }}"
+          is_binaries_ready="${{ inputs.is-binaries-ready }}"
           is_binaries_ready=$([[ -z $is_binaries_ready ]] && echo 'false' || echo $is_binaries_ready)
-
-          echo "is-binaries-ready=$is_binaries_ready"
           echo "is-binaries-ready=$is_binaries_ready" >> $GITHUB_OUTPUT
 
       - name: Read the binaries publication configuration
@@ -90,7 +90,7 @@ jobs:
   publish-desktop-binaries:
     name: Publish Desktop Binaries
     needs: prepare
-    if: needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.outputs.is-binaries-ready == 'false'
+    if: ${{ needs.prepare.outputs.interrupt-publication == 'false' && needs.prepare.outputs.is-binaries-ready == 'false' }}
     uses: ./.github/workflows/publish-desktop-binaries.yml
     with:
       os: linux
@@ -101,7 +101,7 @@ jobs:
   publish:
     name: Publish Desktop ${{ matrix.publish.runtime }} flatpak
     needs: [ prepare, publish-desktop-binaries ]
-    if: always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || needs.prepare.outputs.is-binaries-ready == 'true' )
+    if: ${{ always() && needs.prepare.outputs.interrupt-publication == 'false' && ( needs.publish-desktop-binaries.result == 'success' || needs.prepare.outputs.is-binaries-ready == 'true' ) }}
     strategy:
       fail-fast: false
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
@@ -131,8 +131,6 @@ jobs:
         shell: bash
         run: |
 
-          # linux_release=$(lsb_release --release --short)
-
           sudo apt-get update -y
 
           # ???
@@ -142,10 +140,6 @@ jobs:
           # Flatpak package requirements for Ubuntu - 
           sudo apt-get install -y flatpak flatpak-builder
           flatpak remote-add --user --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-
-      - name: Assign version
-        id: assign-version
-        uses: ./.github/actions/assign-version
 
       - name: Prepare Publish
         shell: bash
