@@ -73,8 +73,9 @@ jobs:
         shell: bash
         run: |
           is_binaries_ready="${{ github.event.inputs.is-binaries-ready }}"
+          is_binaries_ready=[[ -z $is_binaries_ready ]] && echo 'false' || echo $is_binaries_ready
 
-          is_binaries_ready=[[ -z $is_binaries_ready ]] && echo "false" || echo $is_binaries_ready
+          echo "is-binaries-ready=$is_binaries_ready"
           echo "is-binaries-ready=$is_binaries_ready" >> $GITHUB_OUTPUT
 
       - name: Read the binaries publication configuration
