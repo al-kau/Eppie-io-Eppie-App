@@ -15,6 +15,7 @@ public sealed partial class TwoFactorAuthenticationControl : UserControl
     }
 
     public event EventHandler<TwoFactorAuthenticationEventArgs>? AuthenticateButtonClick;
+    public event EventHandler? CancelButtonClick;
 
     public TwoFactorAuthenticationControl()
     {
@@ -24,5 +25,10 @@ public sealed partial class TwoFactorAuthenticationControl : UserControl
     private void OnAuthenticateButtonClick(object sender, RoutedEventArgs e)
     {
         AuthenticateButtonClick?.Invoke(this, new TwoFactorAuthenticationEventArgs(TwoFactorCodeTextBox.Text));
+    }
+
+    private void OnCanncelClick(object sender, RoutedEventArgs e)
+    {
+        CancelButtonClick?.Invoke(this, EventArgs.Empty);
     }
 }

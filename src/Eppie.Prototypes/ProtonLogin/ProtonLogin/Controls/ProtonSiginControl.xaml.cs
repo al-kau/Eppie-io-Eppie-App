@@ -1,5 +1,7 @@
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
+using System;
+using System.Diagnostics.Tracing;
 using Microsoft.UI.Dispatching;
 
 namespace ProtonLogin.Controls;
@@ -103,13 +105,18 @@ public sealed partial class ProtonSiginControl : UserControl
         }
     }
 
-    private Task<(bool,string,string)> AskProtonCpatcha(Uri uri, CancellationToken cancellationToken)
+    private Task<(bool,string,string)> AskProtonCpatcha(Uri uri, Exception ex, CancellationToken cancellationToken)
     {
         var tcs = new TaskCompletionSource<(bool,string,string)>();
 
         CaptchaControl.HumanVerificationCompleted += OnCompleted;
         CaptchaControl.HumanVerificationCancelled += OnCancelled;
         SetCaptchaUri(uri);
+
+        if (ex != null)
+        {
+            OnError(ex);
+        }
 
         GotoPhase(SignInPhase.Captcha);
 
@@ -138,9 +145,7 @@ public sealed partial class ProtonSiginControl : UserControl
 
             tcs.SetResult((false, string.Empty, string.Empty));
         }
-
     }
-
 
     private async void SetCaptchaUri(Uri uri)
     {
@@ -157,11 +162,17 @@ public sealed partial class ProtonSiginControl : UserControl
         }
     }
 
-    private Task<string> AskTwoFactorCode(CancellationToken cancellationToken)
+    private Task<(bool, string)> AskTwoFactorCode(Exception ex, CancellationToken cancellationToken)
     {
-        var tcs = new TaskCompletionSource<string>();
+        var tcs = new TaskCompletionSource<(bool, string)>();
 
         TwoFactorAuthenticationControl.AuthenticateButtonClick += OnEvent;
+        TwoFactorAuthenticationControl.CancelButtonClick += OnCancel;
+
+        if (ex != null)
+        {
+            OnError(ex);
+        }
 
         GotoPhase(SignInPhase.TwoFactor);
 
@@ -170,15 +181,31 @@ public sealed partial class ProtonSiginControl : UserControl
         void OnEvent(object? sender, TwoFactorAuthenticationControl.TwoFactorAuthenticationEventArgs eventArgs)
         {
             TwoFactorAuthenticationControl.AuthenticateButtonClick -= OnEvent;
-            tcs.SetResult(eventArgs.Code);
+            TwoFactorAuthenticationControl.CancelButtonClick -= OnCancel;
+
+            tcs.SetResult((true, eventArgs.Code));
+        }
+
+        void OnCancel(object? sender, EventArgs eventArgs)
+        {
+            TwoFactorAuthenticationControl.AuthenticateButtonClick -= OnEvent;
+            TwoFactorAuthenticationControl.CancelButtonClick -= OnCancel;
+
+            tcs.SetResult((false, string.Empty));
         }
     }
 
-    private Task<string> AskMailboxPassword(CancellationToken cancellationToken)
+    private Task<(bool, string)> AskMailboxPassword(Exception ex, CancellationToken cancellationToken)
     {
-        var tcs = new TaskCompletionSource<string>();
+        var tcs = new TaskCompletionSource<(bool, string)>();
 
         MailboxPasswordControl.UnlockClick += OnEvent;
+        MailboxPasswordControl.CancelButtonClick += OnCancel;
+
+        if(ex != null)
+        {
+            OnError(ex);
+        }
 
         GotoPhase(SignInPhase.MailboxPassord);
 
@@ -187,7 +214,17 @@ public sealed partial class ProtonSiginControl : UserControl
         void OnEvent(object? sender, MailboxPasswordControl.UnlockMailboxEventArgs eventArgs)
         {
             MailboxPasswordControl.UnlockClick -= OnEvent;
-            tcs.SetResult(eventArgs.MailboxPassword);
+            MailboxPasswordControl.CancelButtonClick -= OnCancel;
+
+            tcs.SetResult((true, eventArgs.MailboxPassword));
+        }
+
+        void OnCancel(object? sender, EventArgs eventArgs)
+        {
+            MailboxPasswordControl.UnlockClick -= OnEvent;
+            MailboxPasswordControl.CancelButtonClick -= OnCancel;
+
+            tcs.SetResult((false, string.Empty));
         }
     }
 
@@ -220,5 +257,19 @@ public sealed partial class ProtonSiginControl : UserControl
     {
         OutputChanged?.Invoke(this, new OutputEventArgs());
         GotoPhase(SignInPhase.Authentication);
+    }
+
+    private async void OnError(Exception ex)
+    {
+        try
+        {
+            await RunAsync(() =>
+            {
+                ErrorOccurred?.Invoke(this, new ErrorEventArgs(ex));
+            }).ConfigureAwait(true);
+        }
+        catch
+        {
+        }
     }
 }

@@ -14,6 +14,7 @@ public sealed partial class MailboxPasswordControl : UserControl
     }
 
     public event EventHandler<UnlockMailboxEventArgs>? UnlockClick;
+    public event EventHandler? CancelButtonClick;
 
     public MailboxPasswordControl()
     {
@@ -23,5 +24,10 @@ public sealed partial class MailboxPasswordControl : UserControl
     private void OnUnlockButtonClick(object sender, RoutedEventArgs e)
     {
         UnlockClick?.Invoke(this, new UnlockMailboxEventArgs(MailboxPasswordBox.Password));
+    }
+
+    private void OnCanncelClick(object sender, RoutedEventArgs e)
+    {
+        CancelButtonClick?.Invoke(this, EventArgs.Empty);
     }
 }
