@@ -146,7 +146,7 @@
             "uno",
             "all"
         ],
-        "os": "windows-2025",
+        "os": "windows-2025-vs2026",
         "prerequisites": {
             "msbuild": "true",
             "uno-platform": "true"
@@ -184,8 +184,7 @@
         "os": "macos-latest",
         "prerequisites": {
             "msbuild": "false",
-            "uno-platform": "true",
-            "xcode": "/Applications/Xcode_16.4.app"
+            "uno-platform": "true"
         },
         "build": {
             "tool": "dotnet",
@@ -254,7 +253,7 @@
             "windows",
             "all"
         ],
-        "os": "windows-2022",
+        "os": "windows-2025-vs2026",
         "prerequisites": {
             "msbuild": "true",
             "uno-platform": "false"
@@ -276,7 +275,7 @@
         "keywords": [
             "autobuild"
         ],
-        "os": "windows-2022",
+        "os": "windows-2025-vs2026",
         "prerequisites": {
             "msbuild": "true",
             "uno-platform": "true",
