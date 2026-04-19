@@ -184,7 +184,8 @@
         "os": "macos-latest",
         "prerequisites": {
             "msbuild": "false",
-            "uno-platform": "true"
+            "uno-platform": "true",
+            "xcode": "/Applications/Xcode_26.1.1.app"
         },
         "build": {
             "tool": "dotnet",
@@ -253,7 +254,7 @@
             "windows",
             "all"
         ],
-        "os": "windows-2025-vs2026",
+        "os": "windows-2022",
         "prerequisites": {
             "msbuild": "true",
             "uno-platform": "false"
