@@ -24,6 +24,7 @@ using Eppie.App.UI.Controls;
 using Eppie.App.WebViewHelper;
 using Microsoft.Web.WebView2.Core;
 using Tuvi.App.ViewModels;
+using Tuvi.Core.Entities;
 using Windows.Web.Http;
 
 #if WINDOWS_UWP
@@ -34,23 +35,17 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 #endif
 
-namespace Eppie.App.Views
+namespace Eppie.App.Views.Dialogs
 {
-    internal partial class ConnectProtonAddressPageBase : BasePage<ConnectProtonAddressPageViewModel>
+    internal partial class ConnectProtonAddressViewBase : AppDialogViewBase<ConnectProtonAddressViewModel, Account>
     { }
 
-    internal sealed partial class ConnectProtonAddressPage : ConnectProtonAddressPageBase, IPopupPage
+    internal sealed partial class ConnectProtonAddressView : ConnectProtonAddressViewBase
     {
-        public event EventHandler ClosePopupRequested;
 
-        public ConnectProtonAddressPage()
+        public ConnectProtonAddressView()
         {
             this.InitializeComponent();
-
-            // Todo: Remove this piece of code when MacOS will be fixed.
-#if HAS_UNO
-            ViewModel.IsMacOS = OperatingSystem.IsMacOS();
-#endif
 
             ViewModel.ClosePopupAction = ClosePopup;
 
@@ -63,7 +58,7 @@ namespace Eppie.App.Views
             };
         }
 
-        public void OnCloseClicked()
+        public override void OnClose()
         {
             ViewModel.ClosedCommand?.Execute(null);
         }
@@ -147,11 +142,6 @@ namespace Eppie.App.Views
             }
         }
 
-        private void ClosePopup()
-        {
-            ClosePopupRequested?.Invoke(this, EventArgs.Empty);
-        }
-
         private void UpdateFocus()
         {
             if (ViewModel.IsProcess)
@@ -199,6 +189,8 @@ namespace Eppie.App.Views
                 control.Focus(FocusState.Programmatic);
             }
         }
+
+
     }
 
     internal class HumanVerificationResponse
@@ -225,7 +217,7 @@ namespace Eppie.App.Views
 #if WINDOWS_UWP
                 response = JsonSerializer.Deserialize<HumanVerificationResponse>(json);
 #else
-                response = JsonSerializer.Deserialize<HumanVerificationResponse>(json, ConnectProtonJsonContext2.Default.HumanVerificationResponse);
+                response = JsonSerializer.Deserialize<HumanVerificationResponse>(json, ConnectProtonJsonContext.Default.HumanVerificationResponse);
 #endif
                 return true;
             }
@@ -242,7 +234,7 @@ namespace Eppie.App.Views
 
 #if !WINDOWS_UWP
     [JsonSerializable(typeof(HumanVerificationResponse))]
-    internal partial class ConnectProtonJsonContext2 : JsonSerializerContext
+    internal partial class ConnectProtonJsonContext : JsonSerializerContext
     {
     }
 #endif

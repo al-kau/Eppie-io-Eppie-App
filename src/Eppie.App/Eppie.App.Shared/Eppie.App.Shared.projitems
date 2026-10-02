@@ -19,6 +19,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EppieHost.Uno.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\EppieHost.UWP.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Helpers\PlatformTools.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Helpers\ViewModelExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\HashTransformOperator.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LogConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Logging\LoggingExtensions.cs" />
@@ -41,6 +42,10 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI\Converters\AttachmentConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI\Converters\RecipientConverter.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Views\BasePage.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\AppDialogViewBase.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Views\Dialogs\ConnectProtonAddressView.xaml.cs">
+      <DependentUpon>ConnectProtonAddressView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="$(MSBuildThisFileDirectory)WebViewHelper\ScriptLoader.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -229,6 +234,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="$(MSBuildThisFileDirectory)Views\ContactsPanelPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="$(MSBuildThisFileDirectory)Views\Dialogs\ConnectProtonAddressView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

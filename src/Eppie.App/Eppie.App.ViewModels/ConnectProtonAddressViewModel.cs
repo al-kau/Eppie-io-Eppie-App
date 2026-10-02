@@ -28,18 +28,18 @@ using Tuvi.Proton.Primitive.Messages.Errors;
 
 namespace Tuvi.App.ViewModels
 {
-    //public enum ProtonConnectionStep
-    //{
-    //    Unknown,
-    //    Credentials,
-    //    HumanVerifier,
-    //    TwoFactorCode,
-    //    UnlockMailbox,
-    //    Done,
-    //    OpenSettings,
-    //}
+    public enum ProtonConnectionStep
+    {
+        Unknown,
+        Credentials,
+        HumanVerifier,
+        TwoFactorCode,
+        UnlockMailbox,
+        Done,
+        OpenSettings,
+    }
 
-    public class ConnectProtonAddressPageViewModel : ProtonAddressSettingsPageViewModel
+    public class ConnectProtonAddressViewModel : DialogViewModel<Account>
     {
         private ProtonConnectionStep _step;
         public ProtonConnectionStep Step
@@ -78,16 +78,16 @@ namespace Tuvi.App.ViewModels
         public IAsyncRelayCommand OpenSettingsCommand { get; }
         public IRelayCommand ClosedCommand { get; }
         public IRelayCommand DoneCommand { get; }
+        public IRelayCommand HandleErrorCommand { get; }
 
         public Action ClosePopupAction { get; set; }
-        public bool IsMacOS { get; set; }
         private Account AccountData { get; set; }
 
         private event EventHandler<TwoFactorCodeEventArgs> TwoFactorCodeProvided;
         private event EventHandler<MailboxPasswordEventArgs> MailboxPasswordProvided;
         private event EventHandler<HumanVerificationEventArgs> HumanVerificationCompleted;
 
-        public ConnectProtonAddressPageViewModel() : base()
+        public ConnectProtonAddressViewModel() : base()
         {
             IsProcess = false;
             Step = ProtonConnectionStep.Unknown;
@@ -97,6 +97,7 @@ namespace Tuvi.App.ViewModels
             OpenSettingsCommand = new AsyncRelayCommand(OnOpenSettings);
             ClosedCommand = new RelayCommand(OnClosed);
             DoneCommand = new RelayCommand(OnDone);
+            HandleErrorCommand = new RelayCommand<object>(ex => OnError(ex as Exception));
 
             Email.Errors.CollectionChanged += (s, e) => ContinueCommand.NotifyCanExecuteChanged();
             Password.Errors.CollectionChanged += (s, e) => ContinueCommand.NotifyCanExecuteChanged();
@@ -104,17 +105,29 @@ namespace Tuvi.App.ViewModels
             MailboxPassword.Errors.CollectionChanged += (s, e) => ContinueCommand.NotifyCanExecuteChanged();
         }
 
-        public override void OnNavigatedTo(object data)
+        public override void InitializeData(Account data)
         {
-            if (data is Account accountData)
+            if (data != null)
             {
-                AccountData = accountData;
-                Email.SetInitialValue(accountData.Email?.Address);
+                AccountData = data;
+                Email.SetInitialValue(data.Email?.Address);
             }
             ShowStep(ProtonConnectionStep.Credentials);
 
-            base.OnNavigatedTo(data);
+            base.InitializeData(data);
         }
+
+        //public override void OnNavigatedTo(object data)
+        //{
+        //    if (data is Account accountData)
+        //    {
+        //        AccountData = accountData;
+        //        Email.SetInitialValue(accountData.Email?.Address);
+        //    }
+        //    ShowStep(ProtonConnectionStep.Credentials);
+
+        //    base.OnNavigatedTo(data);
+        //}
 
         public override void OnError(Exception e)
         {
@@ -285,12 +298,6 @@ namespace Tuvi.App.ViewModels
         private async Task<Account> LoginAsync()
         {
             HumanVerifier humanVerifier = ProvideHumanVerificationToken;
-
-            // Todo: Remove this piece of code when MacOS will be fixed.
-            if (IsMacOS)
-            {
-                humanVerifier = null;
-            }
 
             ProtonCredentials protonCredentials = await ProtonLoginHelper.LoginAsync(Email.Value,
                                                                                      Password.Value,

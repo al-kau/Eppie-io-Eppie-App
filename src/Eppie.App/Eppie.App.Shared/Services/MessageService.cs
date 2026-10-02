@@ -33,6 +33,8 @@ using Eppie.App.Models;
 using System.Runtime.InteropServices;
 using Eppie.App.Views;
 using Eppie.App.UI.Common;
+using Eppie.App.Views.Dialogs;
+
 
 #if WINDOWS_UWP
 using Windows.UI.Xaml;
@@ -562,9 +564,14 @@ namespace Eppie.App.Services
                 _xamlRootProvider()).ConfigureAwait(true);
         }
 
-        public Task ShowProtonConnectAddressDialogAsync(object data)
+        //public Task ShowProtonConnectAddressDialogAsync(Account account = null)
+        //{
+        //    return UITools.ShowPopupAsync<ConnectProtonAddressPage>(_xamlRootProvider(), account);
+        //}
+
+        public Task ShowProtonConnectAddressDialogAsync(Account account = null)
         {
-            return UITools.ShowPopupAsync<ConnectProtonAddressPage>(_xamlRootProvider(), data);
+            return UITools.ShowAppDialogAsync<ConnectProtonAddressView, Account>(_xamlRootProvider(), account);
         }
 
         public Task ShowInvitationDialogAsync(object invitationData)
