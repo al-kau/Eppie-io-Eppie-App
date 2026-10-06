@@ -42,6 +42,7 @@ namespace Eppie.App.Views.Dialogs
 
     internal sealed partial class ConnectProtonAddressView : ConnectProtonAddressViewBase
     {
+        private const string BlankPage = "about:blank";
 
         public ConnectProtonAddressView()
         {
@@ -97,7 +98,8 @@ namespace Eppie.App.Views.Dialogs
 
         private async void OnNavigationCompleted(Microsoft.UI.Xaml.Controls.WebView2 sender, CoreWebView2NavigationCompletedEventArgs args)
         {
-            if (!args.IsSuccess || args.HttpStatusCode == (int)HttpStatusCode.None)
+            bool isAboutBlank = string.Equals(sender.Source?.AbsoluteUri, BlankPage, StringComparison.OrdinalIgnoreCase);
+            if (isAboutBlank || !args.IsSuccess || args.HttpStatusCode == (int)HttpStatusCode.None)
             {
                 return;
             }
@@ -128,17 +130,15 @@ namespace Eppie.App.Views.Dialogs
 
         private async Task UpdateHumanVerifierPage()
         {
-            const string blankPage = "about:blank";
-
             await HumanVerifierWebView.EnsureCoreWebView2Async();
             if (ViewModel.Step == ProtonConnectionStep.HumanVerifier)
             {
-                string uri = ViewModel.HumanVerifierUri?.ToString() ?? blankPage;
+                string uri = ViewModel.HumanVerifierUri?.ToString() ?? BlankPage;
                 HumanVerifierWebView.CoreWebView2.Navigate(uri);
             }
             else
             {
-                HumanVerifierWebView.CoreWebView2.Navigate(blankPage);
+                HumanVerifierWebView.CoreWebView2.Navigate(BlankPage);
             }
         }
 

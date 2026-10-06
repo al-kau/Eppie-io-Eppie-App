@@ -31,20 +31,22 @@ namespace Eppie.App.WebViewHelper
 
             return "function postWebViewMessage(message) {" + Environment.NewLine +
                    "  try {" + Environment.NewLine +
-                   "    if (window.hasOwnProperty(\"chrome\") && typeof chrome.webview !== \"undefined\") {" + Environment.NewLine +
+                   "    if (window.hasOwnProperty('chrome') && typeof chrome.webview !== 'undefined') {" + Environment.NewLine +
                    "      // Windows" + Environment.NewLine +
                    "      chrome.webview.postMessage(message);" + Environment.NewLine +
-                   "    } else if (window.hasOwnProperty(\"unoWebView\")) {" + Environment.NewLine +
+                   "    } else if (window.hasOwnProperty('unoWebView')) {" + Environment.NewLine +
                    "      // Android" + Environment.NewLine +
-                   "      unoWebView.postMessage(message);" + Environment.NewLine +
-                   "    } else if (window.hasOwnProperty(\"webkit\") && typeof webkit.messageHandlers !== \"undefined\" && typeof webkit.messageHandlers.unoWebView !== \"undefined\" ) {" + Environment.NewLine +
+                   "      unoWebView.postMessage(typeof data === 'string' ? data : JSON.stringify(data));" + Environment.NewLine +
+                   //"      unoWebView.postMessage(message);" + Environment.NewLine +
+                   "    } else if (window.hasOwnProperty('webkit') && typeof webkit.messageHandlers !== 'undefined' && typeof webkit.messageHandlers.unoWebView !== 'undefined' ) {" + Environment.NewLine +
                    "      // linux, macOS, iOS" + Environment.NewLine +
-                   "      webkit.messageHandlers.unoWebView.postMessage(message);" + Environment.NewLine +
+                   "      webkit.messageHandlers.unoWebView.postMessage(typeof data === 'string' ? data : JSON.stringify(data));" + Environment.NewLine +
+                   //"      webkit.messageHandlers.unoWebView.postMessage(message);" + Environment.NewLine +
                    "    } else {" + Environment.NewLine +
-                   "      alert(\"Unknown message handler\");" + Environment.NewLine +
+                   "      alert('Unknown message handler');" + Environment.NewLine +
                    "    }" + Environment.NewLine +
                    "  } catch (ex) {" + Environment.NewLine +
-                   "    alert(\"Error occurred: \" + ex);" + Environment.NewLine +
+                   "    alert('Error occurred: ' + ex);" + Environment.NewLine +
                    "  }" + Environment.NewLine +
                    "}" + Environment.NewLine +
                    "var postMessageToParent = postWebViewMessage;";
