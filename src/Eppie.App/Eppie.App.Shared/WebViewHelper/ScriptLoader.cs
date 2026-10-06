@@ -36,11 +36,11 @@ namespace Eppie.App.WebViewHelper
                    "      chrome.webview.postMessage(message);" + Environment.NewLine +
                    "    } else if (window.hasOwnProperty('unoWebView')) {" + Environment.NewLine +
                    "      // Android" + Environment.NewLine +
-                   "      unoWebView.postMessage(typeof data === 'string' ? data : JSON.stringify(data));" + Environment.NewLine +
+                   "      unoWebView.postMessage(typeof message === 'string' ? message : JSON.stringify(message));" + Environment.NewLine +
                    //"      unoWebView.postMessage(message);" + Environment.NewLine +
                    "    } else if (window.hasOwnProperty('webkit') && typeof webkit.messageHandlers !== 'undefined' && typeof webkit.messageHandlers.unoWebView !== 'undefined' ) {" + Environment.NewLine +
                    "      // linux, macOS, iOS" + Environment.NewLine +
-                   "      webkit.messageHandlers.unoWebView.postMessage(typeof data === 'string' ? data : JSON.stringify(data));" + Environment.NewLine +
+                   "      webkit.messageHandlers.unoWebView.postMessage(typeof message === 'string' ? message : JSON.stringify(message));" + Environment.NewLine +
                    //"      webkit.messageHandlers.unoWebView.postMessage(message);" + Environment.NewLine +
                    "    } else {" + Environment.NewLine +
                    "      alert('Unknown message handler');" + Environment.NewLine +
